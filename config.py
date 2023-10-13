@@ -10,3 +10,5 @@ DB_PASSWORD = env.str("password")
 DB_NAME = env.str("db")
 
 DATABASE_URL = f"postgresql+asyncpg://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+
+API_KEY = env.str("API_KEY")
