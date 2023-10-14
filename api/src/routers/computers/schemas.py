@@ -5,10 +5,11 @@ from pydantic import BaseModel, Field
 
 class Categories(str, Enum):
     vip = "VIP"
-    regular = "Обычный"
+    regular = "Regular"
 
 
 class BaseComputer(BaseModel):
+    computer_id: int
     brand: str
     model: str
     cpu: str
@@ -20,3 +21,14 @@ class BaseComputer(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+class Components(str, Enum):
+    brand = "brand"
+    model = "model"
+    cpu = "cpu"
+    ram = "ram"
+    storage = "storage"
+    gpu = "gpu"
+    description = "description"
+    category = "category"
