@@ -3,7 +3,7 @@ from fastapi import FastAPI
 
 from routers import user_operations_router, computer_operations_router
 
-app = FastAPI(title="Test Project")
+app = FastAPI(title="Club management API")
 
 app.include_router(user_operations_router, prefix="/api/v1")
 app.include_router(computer_operations_router, prefix="/api/v1")

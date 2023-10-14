@@ -15,7 +15,6 @@ class CreateUser(BaseUser):
 
 
 class ChangePassword(BaseModel):
-    user_id: int
     password: str = Field(min_length=8, max_length=30)
     new_password: str = Field(min_length=8, max_length=30)
 
