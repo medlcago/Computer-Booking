@@ -8,10 +8,10 @@ from api.models.computer import Computer
 from database import get_db
 from routers.computers.schemas import BaseComputer, Categories, Components
 
-router = APIRouter(prefix="/computer", tags=["Computer Operation"])
+router = APIRouter(prefix="/computers", tags=["Computer Operation"])
 
 
-@router.post("/add-computer")
+@router.post("/")
 async def add_new_computer(data: BaseComputer, db: AsyncSession = Depends(get_db)):
     computer = Computer(**data.model_dump())
     db.add(computer)
@@ -22,7 +22,7 @@ async def add_new_computer(data: BaseComputer, db: AsyncSession = Depends(get_db
     }
 
 
-@router.get("/get-computer/{computer_id}", response_model=BaseComputer)
+@router.get("/id{computer_id}", response_model=BaseComputer)
 async def get_computer_by_id(computer_id: int, db: AsyncSession = Depends(get_db)):
     computer = await db.scalar(select(Computer).filter_by(computer_id=computer_id))
     if computer is None:
@@ -30,19 +30,19 @@ async def get_computer_by_id(computer_id: int, db: AsyncSession = Depends(get_db
     return computer
 
 
-@router.get("/get-computers/{category}", response_model=list[BaseComputer])
+@router.get("/{category}", response_model=list[BaseComputer])
 async def get_computers_by_category(category: Categories, db: AsyncSession = Depends(get_db)):
     computers = (await db.scalars(select(Computer).filter_by(category=category))).all()
     return computers
 
 
-@router.get("/get-all-computers", response_model=list[BaseComputer])
+@router.get("/", response_model=list[BaseComputer])
 async def get_all_computers(db: AsyncSession = Depends(get_db)):
     computers = (await db.scalars(select(Computer).order_by(Computer.ram))).all()
     return computers
 
 
-@router.patch("/update-computer/{computer_id}", response_model=BaseComputer)
+@router.patch("/id{computer_id}", response_model=BaseComputer)
 async def update_computer_component(computer_id: Annotated[int, Path(..., description="Уникальный ID компьютера")],
                                     component: Annotated[Components, Query(..., description="Компонент компьютера")],
                                     value: Annotated[str | int, Query(..., description="Значение компонента")],
@@ -62,7 +62,7 @@ async def update_computer_component(computer_id: Annotated[int, Path(..., descri
     return computer
 
 
-@router.put("/update-computer/{computer_id}", response_model=BaseComputer)
+@router.put("/id{computer_id}", response_model=BaseComputer)
 async def update_computer(computer_id: int, data: BaseComputer, db: AsyncSession = Depends(get_db)):
     computer = await db.scalar(select(Computer).filter_by(computer_id=computer_id))
     if computer is None:
@@ -73,7 +73,7 @@ async def update_computer(computer_id: int, data: BaseComputer, db: AsyncSession
     return computer
 
 
-@router.delete("/delete-computer/{computer_id}")
+@router.delete("/id{computer_id}")
 async def delete_computer(computer_id: int, db: AsyncSession = Depends(get_db)):
     computer = await db.scalar(select(Computer).filter_by(computer_id=computer_id))
     if computer is None:

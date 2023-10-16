@@ -1,3 +1,5 @@
+from enum import Enum
+
 from pydantic import BaseModel, Field
 
 
@@ -15,8 +17,8 @@ class CreateUser(BaseUser):
 
 
 class ChangePassword(BaseModel):
-    password: str = Field(min_length=8, max_length=30)
-    new_password: str = Field(min_length=8, max_length=30)
+    password: str = Field(min_length=8, max_length=30, description="Текущий пароль")
+    new_password: str = Field(min_length=8, max_length=30, description="Новый пароль")
 
     class Config:
         from_attributes = True
