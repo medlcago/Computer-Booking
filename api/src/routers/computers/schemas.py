@@ -9,7 +9,7 @@ class Categories(str, Enum):
 
 
 class BaseComputer(BaseModel):
-    computer_id: int
+    computer_id: int | None = None
     brand: str
     model: str
     cpu: str
@@ -32,3 +32,8 @@ class Components(str, Enum):
     gpu = "gpu"
     description = "description"
     category = "category"
+
+
+class UpdateComputerComponent(BaseModel):
+    component_name: Components
+    component_value: str | int
