@@ -76,7 +76,6 @@ async def update_computer_component(computer_id: int,
                                     ])],
                                     db: AsyncSession = Depends(get_db)):
     computer = await db.scalar(select(Computer).filter_by(computer_id=computer_id))
-
     if computer is None:
         raise HTTPException(status_code=404, detail=f"Computer with ID {computer_id} not found.")
 

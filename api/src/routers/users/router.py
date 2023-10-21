@@ -3,6 +3,7 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException, Body
 from sqlalchemy import select
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.models.user import User
@@ -30,9 +31,8 @@ async def create_user(
         db.add(user)
         await db.commit()
         return user
-    except Exception as e:
-        logger.error(f"User creation error: {e}")
-        raise HTTPException(status_code=500, detail="User creation error")
+    except IntegrityError:
+        raise HTTPException(status_code=409, detail=f"User with ID {user.user_id} already exists.")
 
 
 @router.get("/", response_model=list[BaseUser], summary="Получение информации о всех пользователях")

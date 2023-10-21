@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from pydantic import BaseModel, Field
 
 
@@ -5,6 +7,7 @@ class BaseUser(BaseModel):
     user_id: int
     first_name: str
     last_name: str
+    created_at: datetime = datetime.utcnow()
 
     class Config:
         from_attributes = True
