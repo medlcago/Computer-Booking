@@ -1,19 +1,17 @@
-import logging
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, HTTPException, Body
+from fastapi import APIRouter, Depends, HTTPException, Body, Query
 from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.models.user import User
 from database import get_db
-from depends import auth_guard_key
-from routers.users.schemas import CreateUser, BaseUser, ChangePassword
-from routers.users.utils import hash_password, verify_password
+from routers.users.schemas import CreateUser, BaseUser, ChangePasswordData, ChangePasswordResponse
+from services.auth import auth_guard_key
+from services.auth import auth_service
 
 router = APIRouter(prefix="/users", tags=["User Operation"], dependencies=[Depends(auth_guard_key)])
-logger = logging.getLogger(__name__)
 
 
 @router.post("/", response_model=BaseUser, summary="Регистрация нового пользователя")
@@ -27,7 +25,7 @@ async def create_user(
         db: AsyncSession = Depends(get_db)):
     try:
         user = User(**data.model_dump())
-        user.password = hash_password(password=user.password)
+        user.password = auth_service.hash_password(password=user.password)
         db.add(user)
         await db.commit()
         return user
@@ -36,7 +34,7 @@ async def create_user(
 
 
 @router.get("/", response_model=list[BaseUser], summary="Получение информации о всех пользователях")
-async def get_all_users(limit: int = None, db: AsyncSession = Depends(get_db)):
+async def get_all_users(limit: Annotated[int | None, Query(gt=0)] = None, db: AsyncSession = Depends(get_db)):
     if limit:
         users = (await db.scalars(select(User).limit(limit=limit))).all()
     else:
@@ -55,17 +53,23 @@ async def get_user_by_id(user_id: int, db: AsyncSession = Depends(get_db)):
     return user
 
 
-@router.patch("/id{user_id}", response_model=ChangePassword, response_model_exclude={"password"},
-              summary="Сменить пароль пользователя")
-async def change_user_password(user_id: int, data: ChangePassword, db: AsyncSession = Depends(get_db)):
+@router.patch("/id{user_id}", response_model=ChangePasswordResponse, summary="Сменить пароль пользователя")
+async def change_user_password(user_id: int, data: ChangePasswordData, db: AsyncSession = Depends(get_db)):
     user = await db.scalar(select(User).filter_by(user_id=user_id))
     if user is None:
         raise HTTPException(status_code=404, detail="User not found.")
 
-    if verify_password(data.password, user.password):
+    if auth_service.verify_password(data.password, user.password):
         if data.password == data.new_password:
             raise HTTPException(status_code=400, detail="The new password must not match the old password.")
-        user.password = hash_password(data.new_password)
+        user.password = auth_service.hash_password(data.new_password)
         await db.commit()
-        return data
+
+        response_data = ChangePasswordResponse(
+            status=True,
+            user_id=user_id,
+            new_password=data.password
+        )
+
+        return response_data
     raise HTTPException(status_code=401, detail="Invalid user password.")

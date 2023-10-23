@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import Column, String, BIGINT, MetaData, DateTime, TIMESTAMP
+from sqlalchemy import Column, String, BIGINT, MetaData, TIMESTAMP
 from sqlalchemy.orm import declarative_base
 
 metadata = MetaData()

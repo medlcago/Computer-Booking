@@ -7,8 +7,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.models.computer import Computer
 from database import get_db
-from depends import auth_guard_key
 from routers.computers.schemas import BaseComputer, Categories, UpdateComputerComponent
+from services.auth import auth_guard_key
 
 router = APIRouter(prefix="/computers", tags=["Computer Operation"], dependencies=[Depends(auth_guard_key)])
 
