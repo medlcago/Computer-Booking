@@ -1,6 +1,6 @@
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, HTTPException, Body, Query
+from fastapi import APIRouter, Depends, HTTPException, Body, Query, status
 from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -14,7 +14,7 @@ from services.auth import auth_service
 router = APIRouter(prefix="/users", tags=["User Operation"], dependencies=[Depends(auth_guard_key)])
 
 
-@router.post("/", response_model=BaseUser, summary="Регистрация нового пользователя")
+@router.post("/", response_model=BaseUser, summary="Регистрация нового пользователя", status_code=status.HTTP_201_CREATED)
 async def create_user(
         data: Annotated[CreateUser, Body(examples=[{
             "user_id": 1000,
@@ -66,9 +66,8 @@ async def change_user_password(user_id: int, data: ChangePasswordData, db: Async
         await db.commit()
 
         response_data = ChangePasswordResponse(
-            status=True,
             user_id=user_id,
-            new_password=data.password
+            new_password=data.new_password
         )
 
         return response_data
