@@ -8,7 +8,7 @@ from routers.computers.schemas import BaseComputer, Categories, UpdateComputerCo
 from services.auth import auth_guard_key
 from . import crud
 
-router = APIRouter(prefix="/computers", tags=["Computer Operation"])
+router = APIRouter(prefix="/computers", tags=["Computer Operation"], dependencies=[Depends(auth_guard_key)])
 
 
 @router.post("/", summary="Добавить новый компьютер")
