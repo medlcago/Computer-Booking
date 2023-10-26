@@ -10,6 +10,7 @@ metadata = MetaData()
 
 Base = declarative_base(metadata=metadata)
 
+
 class Booking(Base):
     __tablename__ = 'bookings'
 
@@ -21,4 +22,3 @@ class Booking(Base):
 
     user = relationship("User", back_populates="booking")
     computer = relationship("Computer", back_populates="booking")
-
