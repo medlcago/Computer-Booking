@@ -5,7 +5,7 @@ from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from api.models.user import User
+from api.models import User
 from routers.users.schemas import ChangePasswordResponse
 from services.auth import auth_service
 

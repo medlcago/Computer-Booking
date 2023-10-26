@@ -5,7 +5,7 @@ from sqlalchemy import select, update, delete
 from sqlalchemy.exc import IntegrityError, DBAPIError
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from api.models.computer import Computer
+from api.models import Computer
 from routers.computers.schemas import Categories
 
 
