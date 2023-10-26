@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from sqlalchemy import Column, String, BIGINT, MetaData, TIMESTAMP
-from sqlalchemy.orm import declarative_base
+from sqlalchemy.orm import declarative_base, relationship
 
 metadata = MetaData()
 
@@ -18,3 +18,5 @@ class User(Base):
     password: str = Column(String(length=255), nullable=False)
     created_at: datetime = Column(TIMESTAMP, nullable=False, default=datetime.utcnow)
     updated_at: datetime = Column(TIMESTAMP, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    booking = relationship("Booking", back_populates="user")

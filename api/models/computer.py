@@ -1,5 +1,5 @@
 from sqlalchemy import Column, String, BIGINT, MetaData, INTEGER
-from sqlalchemy.orm import declarative_base
+from sqlalchemy.orm import declarative_base, relationship
 
 metadata = MetaData()
 
@@ -9,7 +9,8 @@ Base = declarative_base(metadata=metadata)
 class Computer(Base):
     __tablename__ = 'computers'
 
-    computer_id: int = Column(BIGINT, primary_key=True, index=True)
+    id: int = Column(BIGINT, primary_key=True, index=True)
+    computer_id: int = Column(BIGINT, nullable=False,unique=True)
     brand: str = Column(String(length=255), nullable=False)
     model: str = Column(String(length=255), nullable=False)
     cpu: str = Column(String(length=255), nullable=False)
@@ -18,3 +19,5 @@ class Computer(Base):
     gpu: str = Column(String(length=255), nullable=False)
     description: str = Column(String(length=255), default=None)
     category: str = Column(String(length=255), nullable=False)
+
+    booking = relationship("Booking", back_populates="computer")
