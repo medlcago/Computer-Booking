@@ -2,7 +2,9 @@ from fastapi import HTTPException
 from fastapi.requests import Request
 from passlib.hash import bcrypt
 
-from config import API_KEY
+from config import load_config
+
+config = load_config()
 
 
 class AuthGuard:
@@ -11,7 +13,7 @@ class AuthGuard:
 
     def __call__(self, request: Request):
         api_key = request.headers.get(self.name)
-        if api_key != API_KEY:
+        if api_key != config.api.api_key:
             raise HTTPException(status_code=403, detail="Access is denied.")
 
 
