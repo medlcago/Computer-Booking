@@ -18,6 +18,8 @@ async def create_user(
             "user_id": 1000,
             "first_name": "Alexander",
             "last_name": "Korolev",
+            "username": "medlcago",
+            "email_address": "medlcago@example.com",
             "password": "28DxTiPdux"
         }])],
         db: AsyncSession = Depends(get_db)):
@@ -32,8 +34,7 @@ async def get_all_users(limit: Annotated[int | None, Query(gt=0)] = None, db: As
 @router.get("/id{user_id}", response_model=BaseUser,
             summary="Получение информации о пользователи по его идентификатору")
 async def get_user_by_id(user_id: int, db: AsyncSession = Depends(get_db)):
-    user = await crud.get_user_by_id(db=db, user_id=user_id)
-    return user
+    return await crud.get_user_by_id(db=db, user_id=user_id)
 
 
 @router.patch("/id{user_id}", response_model=ChangePasswordResponse, summary="Сменить пароль пользователя")

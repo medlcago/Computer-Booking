@@ -1,12 +1,14 @@
 from datetime import datetime
 
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field, field_validator, EmailStr
 
 
 class BaseUser(BaseModel):
     user_id: int
     first_name: str
     last_name: str
+    username: str | None = Field(default=None)
+    email_address: EmailStr | None = Field(default=None)
     created_at: datetime = Field(default_factory=datetime.utcnow)
 
     class Config:

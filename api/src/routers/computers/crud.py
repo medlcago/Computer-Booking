@@ -21,7 +21,7 @@ async def add_new_computer(db: AsyncSession, data: dict) -> Computer:
 
 
 async def get_computer_by_id(db: AsyncSession, computer_id: int) -> Computer:
-    stmt = select(Computer).options(selectinload(Computer.booking))
+    stmt = select(Computer).options(selectinload(Computer.bookings))
     result = await db.execute(stmt)
     computer = result.scalar()
 
@@ -32,9 +32,9 @@ async def get_computer_by_id(db: AsyncSession, computer_id: int) -> Computer:
 
 async def get_computers_by_category(db: AsyncSession, category: Categories, limit: int = None) -> Sequence[Computer]:
     if limit:
-        stmt = select(Computer).options(selectinload(Computer.booking)).filter_by(category=category).limit(limit=limit)
+        stmt = select(Computer).options(selectinload(Computer.bookings)).filter_by(category=category).limit(limit=limit)
     else:
-        stmt = select(Computer).options(selectinload(Computer.booking)).filter_by(category=category)
+        stmt = select(Computer).options(selectinload(Computer.bookings)).filter_by(category=category)
 
     result = await db.execute(stmt)
     computers = result.scalars().all()
@@ -45,10 +45,10 @@ async def get_computers_by_category(db: AsyncSession, category: Categories, limi
 
 async def get_all_computers(db: AsyncSession, limit: int = None) -> Sequence[Computer]:
     if limit:
-        stmt = select(Computer).options(selectinload(Computer.booking)).limit(limit=limit).order_by(
+        stmt = select(Computer).options(selectinload(Computer.bookings)).limit(limit=limit).order_by(
             Computer.ram, Computer.id)
     else:
-        stmt = select(Computer).options(selectinload(Computer.booking)).order_by(
+        stmt = select(Computer).options(selectinload(Computer.bookings)).order_by(
             Computer.ram, Computer.id)
 
     result = await db.execute(stmt)

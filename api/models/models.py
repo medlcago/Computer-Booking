@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import Column, BIGINT, ForeignKey, TIMESTAMP, MetaData, String, INTEGER, BOOLEAN
+from sqlalchemy import BIGINT, ForeignKey, TIMESTAMP, MetaData, String, CheckConstraint
 from sqlalchemy.orm import relationship, declarative_base, Mapped, mapped_column
 
 metadata = MetaData()
@@ -14,11 +14,21 @@ class User(Base):
     user_id: Mapped[int] = mapped_column(BIGINT, unique=True)
     first_name: Mapped[str] = mapped_column(String(length=255))
     last_name: Mapped[str] = mapped_column(String(length=255))
+    username: Mapped[str | None] = mapped_column(String(length=255))
+    email_address: Mapped[str | None] = mapped_column(String(length=255))
     password: Mapped[str] = mapped_column(String(length=255))
+    is_admin: Mapped[bool] = mapped_column(default=False)
+    is_blocked: Mapped[bool] = mapped_column(default=False)
+    is_active: Mapped[bool] = mapped_column(default=True)
+    balance: Mapped[int] = mapped_column(CheckConstraint("balance >= 0"), default=0)
     created_at: Mapped[datetime] = mapped_column(TIMESTAMP(timezone=True), default=datetime.utcnow)
-    updated_at: Mapped[datetime] = mapped_column(TIMESTAMP(timezone=True), default=datetime.utcnow, onupdate=datetime.utcnow)
+    updated_at: Mapped[datetime] = mapped_column(TIMESTAMP(timezone=True),
+                                                 default=datetime.utcnow,
+                                                 onupdate=datetime.utcnow)
 
-    booking: Mapped["Booking"] = relationship("Booking", back_populates="user")
+    bookings: Mapped[list["Booking"]] = relationship(
+        back_populates="user",
+        cascade="all, delete-orphan")
 
 
 class Computer(Base):
@@ -34,9 +44,11 @@ class Computer(Base):
     gpu: Mapped[str] = mapped_column(String(length=255))
     description: Mapped[str | None] = mapped_column(String(length=255), default=None)
     category: Mapped[str] = mapped_column(String(length=255))
-    is_reserved: Mapped[bool] = mapped_column(BOOLEAN, default=False)
+    is_reserved: Mapped[bool] = mapped_column(default=False)
 
-    booking: Mapped["Booking"] = relationship("Booking", back_populates="computer")
+    bookings: Mapped[list["Booking"]] = relationship(
+        back_populates="computer",
+        cascade="all, delete-orphan")
 
 
 class Booking(Base):
@@ -48,5 +60,5 @@ class Booking(Base):
     start_time: Mapped[datetime] = mapped_column(TIMESTAMP(timezone=True))
     end_time: Mapped[datetime] = mapped_column(TIMESTAMP(timezone=True))
 
-    user: Mapped["User"] = relationship("User", back_populates="booking")
-    computer: Mapped["Computer"] = relationship("Computer", back_populates="booking")
+    user: Mapped["User"] = relationship(back_populates="bookings")
+    computer: Mapped["Computer"] = relationship(back_populates="bookings")
