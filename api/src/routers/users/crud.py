@@ -1,9 +1,10 @@
-from typing import Sequence
+from typing import Sequence, Tuple
 
 from fastapi import HTTPException
 from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import selectinload
 
 from api.models import User
 from routers.users.schemas import ChangePasswordResponse
@@ -23,16 +24,21 @@ async def create_user(db: AsyncSession, data: dict) -> User:
 
 async def get_all_users(db: AsyncSession, limit: int = None) -> Sequence[User]:
     if limit:
-        users = (await db.scalars(select(User).limit(limit=limit))).all()
+        stmt = select(User).options(selectinload(User.booking)).limit(limit=limit)
     else:
-        users = (await db.scalars(select(User))).all()
+        stmt = select(User).options(selectinload(User.booking))
+
+    result = await db.execute(stmt)
+    users = result.scalars().all()
     if users:
         return users
     raise HTTPException(status_code=404, detail="Users do not exist.")
 
 
 async def get_user_by_id(db: AsyncSession, user_id: int) -> User:
-    user = await db.scalar(select(User).filter_by(user_id=user_id))
+    stmt = select(User).options(selectinload(User.booking)).filter_by(user_id=user_id)
+    result = await db.execute(stmt)
+    user = result.scalar()
     if user is None:
         raise HTTPException(status_code=404, detail=f"User with ID {user_id} not found.")
     return user
@@ -56,3 +62,15 @@ async def change_user_password(db: AsyncSession, data: dict, user_id: int):
 
         return response_data
     raise HTTPException(status_code=401, detail="Invalid user password.")
+
+
+async def delete_user(db: AsyncSession, user_id: int) -> dict:
+    user = await db.scalar(select(User).filter_by(user_id=user_id))
+    if user is None:
+        raise HTTPException(status_code=404, detail=f"User with ID {user_id} not found.")
+
+    await db.delete(user)
+    await db.commit()
+    return {
+        "status": f"User with ID {user_id} was successfully deleted."
+    }

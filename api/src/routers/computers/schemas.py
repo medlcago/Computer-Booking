@@ -18,7 +18,7 @@ class BaseComputer(BaseModel):
     gpu: str
     description: str | None = Field(default=None, max_length=256)
     category: Categories
-    status: bool = Field(default=True)
+    is_reserved: bool = Field(default=False)
 
     class Config:
         from_attributes = True
