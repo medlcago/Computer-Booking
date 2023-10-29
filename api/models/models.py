@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from sqlalchemy import Column, BIGINT, ForeignKey, TIMESTAMP, MetaData, String, INTEGER, BOOLEAN
-from sqlalchemy.orm import relationship, declarative_base, Mapped
+from sqlalchemy.orm import relationship, declarative_base, Mapped, mapped_column
 
 metadata = MetaData()
 Base = declarative_base(metadata=metadata)
@@ -10,14 +10,13 @@ Base = declarative_base(metadata=metadata)
 class User(Base):
     __tablename__ = 'users'
 
-    id: int = Column(BIGINT, primary_key=True, index=True)
-    user_id: int = Column(BIGINT, nullable=False, unique=True)
-    first_name: str = Column(String(length=255), nullable=False)
-    last_name: str = Column(String(length=255), nullable=False)
-    password: str = Column(String(length=255), nullable=False)
-    created_at: datetime = Column(TIMESTAMP(timezone=True), nullable=False, default=datetime.utcnow)
-    updated_at: datetime = Column(TIMESTAMP(timezone=True), nullable=False, default=datetime.utcnow,
-                                  onupdate=datetime.utcnow)
+    id: Mapped[int] = mapped_column(BIGINT, primary_key=True, index=True)
+    user_id: Mapped[int] = mapped_column(BIGINT, unique=True)
+    first_name: Mapped[str] = mapped_column(String(length=255))
+    last_name: Mapped[str] = mapped_column(String(length=255))
+    password: Mapped[str] = mapped_column(String(length=255))
+    created_at: Mapped[datetime] = mapped_column(TIMESTAMP(timezone=True), default=datetime.utcnow)
+    updated_at: Mapped[datetime] = mapped_column(TIMESTAMP(timezone=True), default=datetime.utcnow, onupdate=datetime.utcnow)
 
     booking: Mapped["Booking"] = relationship("Booking", back_populates="user")
 
@@ -25,17 +24,17 @@ class User(Base):
 class Computer(Base):
     __tablename__ = 'computers'
 
-    id: int = Column(BIGINT, primary_key=True, index=True)
-    computer_id: int = Column(BIGINT, nullable=False, unique=True)
-    brand: str = Column(String(length=255), nullable=False)
-    model: str = Column(String(length=255), nullable=False)
-    cpu: str = Column(String(length=255), nullable=False)
-    ram: int = Column(INTEGER, nullable=False)
-    storage: int = Column(INTEGER, nullable=False)
-    gpu: str = Column(String(length=255), nullable=False)
-    description: str = Column(String(length=255), default=None)
-    category: str = Column(String(length=255), nullable=False)
-    is_reserved: bool = Column(BOOLEAN, nullable=False, default=False)
+    id: Mapped[int] = mapped_column(BIGINT, primary_key=True, index=True)
+    computer_id: Mapped[int] = mapped_column(BIGINT, unique=True)
+    brand: Mapped[str] = mapped_column(String(length=255))
+    model: Mapped[str] = mapped_column(String(length=255))
+    cpu: Mapped[str] = mapped_column(String(length=255))
+    ram: Mapped[int]
+    storage: Mapped[int]
+    gpu: Mapped[str] = mapped_column(String(length=255))
+    description: Mapped[str | None] = mapped_column(String(length=255), default=None)
+    category: Mapped[str] = mapped_column(String(length=255))
+    is_reserved: Mapped[bool] = mapped_column(BOOLEAN, default=False)
 
     booking: Mapped["Booking"] = relationship("Booking", back_populates="computer")
 
@@ -43,11 +42,11 @@ class Computer(Base):
 class Booking(Base):
     __tablename__ = 'bookings'
 
-    id: int = Column(BIGINT, primary_key=True, index=True)
-    user_id: int = Column(BIGINT, ForeignKey(User.user_id))
-    computer_id: int = Column(BIGINT, ForeignKey(Computer.computer_id))
-    start_time: datetime = Column(TIMESTAMP(timezone=True), nullable=False)
-    end_time: datetime = Column(TIMESTAMP(timezone=True), nullable=False)
+    id: Mapped[int] = mapped_column(BIGINT, primary_key=True, index=True)
+    user_id: Mapped[int] = mapped_column(BIGINT, ForeignKey(User.user_id))
+    computer_id: Mapped[int] = mapped_column(BIGINT, ForeignKey(Computer.computer_id))
+    start_time: Mapped[datetime] = mapped_column(TIMESTAMP(timezone=True))
+    end_time: Mapped[datetime] = mapped_column(TIMESTAMP(timezone=True))
 
     user: Mapped["User"] = relationship("User", back_populates="booking")
     computer: Mapped["Computer"] = relationship("Computer", back_populates="booking")
