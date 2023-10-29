@@ -32,7 +32,8 @@ async def get_all_users(limit: Annotated[int | None, Query(gt=0)] = None, db: As
 @router.get("/id{user_id}", response_model=BaseUser,
             summary="Получение информации о пользователи по его идентификатору")
 async def get_user_by_id(user_id: int, db: AsyncSession = Depends(get_db)):
-    return await crud.get_user_by_id(db=db, user_id=user_id)
+    user = await crud.get_user_by_id(db=db, user_id=user_id)
+    return user
 
 
 @router.patch("/id{user_id}", response_model=ChangePasswordResponse, summary="Сменить пароль пользователя")
