@@ -1,6 +1,6 @@
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, Body
+from fastapi import APIRouter, Depends, Body, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from database import get_db
@@ -11,7 +11,7 @@ from . import crud
 router = APIRouter(prefix="/computers", tags=["Computer Operation"], dependencies=[Depends(auth_guard_key)])
 
 
-@router.post("/", summary="Добавить новый компьютер")
+@router.post("/", response_model=BaseComputer, summary="Добавить новый компьютер", status_code=status.HTTP_201_CREATED)
 async def add_new_computer(data: Annotated[BaseComputer, Body(examples=[{
     "computer_id": 1000,
     "brand": "IRU",

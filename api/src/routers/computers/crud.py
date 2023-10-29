@@ -1,29 +1,30 @@
 from typing import Sequence
 
 from fastapi import HTTPException
-from sqlalchemy import select, update, delete
+from sqlalchemy import select, update
 from sqlalchemy.exc import IntegrityError, DBAPIError
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import selectinload
 
 from api.models import Computer
 from routers.computers.schemas import Categories
 
 
-async def add_new_computer(db: AsyncSession, data: dict) -> dict:
+async def add_new_computer(db: AsyncSession, data: dict) -> Computer:
     try:
         computer = Computer(**data)
         db.add(computer)
         await db.commit()
-        return {
-            "status": "Computer added successfully.",
-            "ID": computer.computer_id
-        }
+        return computer
     except IntegrityError:
         raise HTTPException(status_code=409, detail=f"Computer with ID {computer.computer_id} already exists.")
 
 
 async def get_computer_by_id(db: AsyncSession, computer_id: int) -> Computer:
-    computer = await db.scalar(select(Computer).filter_by(computer_id=computer_id))
+    stmt = select(Computer).options(selectinload(Computer.booking))
+    result = await db.execute(stmt)
+    computer = result.scalar()
+
     if computer is None:
         raise HTTPException(status_code=404, detail=f"Computer with ID {computer_id} not found.")
     return computer
@@ -31,18 +32,30 @@ async def get_computer_by_id(db: AsyncSession, computer_id: int) -> Computer:
 
 async def get_computers_by_category(db: AsyncSession, category: Categories, limit: int = None) -> Sequence[Computer]:
     if limit:
-        computers = (await db.scalars(select(Computer).filter_by(category=category).limit(limit=limit))).all()
+        stmt = select(Computer).options(selectinload(Computer.booking)).filter_by(category=category).limit(limit=limit)
     else:
-        computers = (await db.scalars(select(Computer).filter_by(category=category))).all()
-    return computers
+        stmt = select(Computer).options(selectinload(Computer.booking)).filter_by(category=category)
+
+    result = await db.execute(stmt)
+    computers = result.scalars().all()
+    if computers:
+        return computers
+    raise HTTPException(status_code=404, detail=f"Computers with {category} category not found.")
 
 
 async def get_all_computers(db: AsyncSession, limit: int = None) -> Sequence[Computer]:
     if limit:
-        computers = (await db.scalars(select(Computer).limit(limit=limit).order_by(Computer.ram))).all()
+        stmt = select(Computer).options(selectinload(Computer.booking)).limit(limit=limit).order_by(
+            Computer.ram, Computer.id)
     else:
-        computers = (await db.scalars(select(Computer).order_by(Computer.ram))).all()
-    return computers
+        stmt = select(Computer).options(selectinload(Computer.booking)).order_by(
+            Computer.ram, Computer.id)
+
+    result = await db.execute(stmt)
+    computers = result.scalars().all()
+    if computers:
+        return computers
+    raise HTTPException(status_code=404, detail="Computers not found.")
 
 
 async def update_computer_component(db: AsyncSession, data: dict, computer_id: int) -> Computer:
@@ -81,7 +94,7 @@ async def delete_computer(db: AsyncSession, computer_id: int) -> dict:
     if computer is None:
         raise HTTPException(status_code=404, detail=f"Computer with ID {computer_id} not found.")
 
-    await db.execute(delete(Computer).filter_by(computer_id=computer_id))
+    await db.delete(computer)
     await db.commit()
     return {
         "status": f"The computer with ID {computer_id} was successfully deleted."

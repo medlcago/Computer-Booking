@@ -38,3 +38,8 @@ async def get_user_by_id(user_id: int, db: AsyncSession = Depends(get_db)):
 @router.patch("/id{user_id}", response_model=ChangePasswordResponse, summary="Сменить пароль пользователя")
 async def change_user_password(user_id: int, data: ChangePasswordData, db: AsyncSession = Depends(get_db)):
     return await crud.change_user_password(db=db, data=data.model_dump(), user_id=user_id)
+
+
+@router.delete("/id{user_id}", summary="Удалить пользователя по его идентификатору")
+async def delete_user(user_id: int, db: AsyncSession = Depends(get_db)):
+    return await crud.delete_user(db=db, user_id=user_id)
