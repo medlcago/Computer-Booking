@@ -26,18 +26,14 @@ async def get_all_bookings(db: AsyncSession, limit: int = None) -> Sequence[Book
         stmt = select(Booking).options(selectinload(Booking.user), selectinload(Booking.computer))
     result = await db.execute(stmt)
     bookings = result.scalars().all()
-    if bookings:
-        return bookings
-    raise HTTPException(status_code=404, detail="Bookings not found.")
+    return bookings
 
 
 async def get_bookings_by_user_id(db: AsyncSession, user_id: int) -> Sequence[Booking]:
     stmt = select(Booking).options(selectinload(Booking.user), selectinload(Booking.computer)).filter_by(user_id=user_id)
     result = await db.execute(stmt)
     bookings = result.scalars().all()
-    if bookings:
-        return bookings
-    raise HTTPException(status_code=404, detail="Bookings not found.")
+    return bookings
 
 
 async def delete_booking(db: AsyncSession, booking_id: int) -> dict:

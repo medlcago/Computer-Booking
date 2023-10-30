@@ -38,9 +38,7 @@ async def get_computers_by_category(db: AsyncSession, category: Categories, limi
 
     result = await db.execute(stmt)
     computers = result.scalars().all()
-    if computers:
-        return computers
-    raise HTTPException(status_code=404, detail=f"Computers with {category} category not found.")
+    return computers
 
 
 async def get_all_computers(db: AsyncSession, limit: int = None) -> Sequence[Computer]:
@@ -53,9 +51,7 @@ async def get_all_computers(db: AsyncSession, limit: int = None) -> Sequence[Com
 
     result = await db.execute(stmt)
     computers = result.scalars().all()
-    if computers:
-        return computers
-    raise HTTPException(status_code=404, detail="Computers not found.")
+    return computers
 
 
 async def update_computer_component(db: AsyncSession, data: dict, computer_id: int) -> Computer:

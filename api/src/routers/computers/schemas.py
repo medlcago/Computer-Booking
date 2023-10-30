@@ -9,7 +9,7 @@ class Categories(str, Enum):
 
 
 class BaseComputer(BaseModel):
-    computer_id: int | None = None
+    computer_id: int
     brand: str
     model: str
     cpu: str
@@ -18,10 +18,13 @@ class BaseComputer(BaseModel):
     gpu: str
     description: str | None = Field(default=None, max_length=256)
     category: Categories
-    is_reserved: bool = Field(default=False)
 
     class Config:
         from_attributes = True
+
+
+class ComputerResponse(BaseComputer):
+    is_reserved: bool = Field(default=False)
 
 
 class Components(str, Enum):
