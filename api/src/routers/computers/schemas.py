@@ -27,17 +27,16 @@ class ComputerResponse(BaseComputer):
     is_reserved: bool = Field(default=False)
 
 
-class Components(str, Enum):
-    brand = "brand"
-    model = "model"
-    cpu = "cpu"
-    ram = "ram"
-    storage = "storage"
-    gpu = "gpu"
-    description = "description"
-    category = "category"
-
-
 class UpdateComputerComponent(BaseModel):
-    component_name: Components
-    component_value: str | int
+    brand: str | None = Field(default=None)
+    model: str | None = Field(default=None)
+    cpu: str | None = Field(default=None)
+    ram: int | None = Field(default=None)
+    storage: int | None = Field(default=None)
+    gpu: str | None = Field(default=None)
+    description: str | None = Field(default=None, max_length=256)
+    category: Categories | None = Field(default=None)
+
+
+class UpdatedComputerComponent(UpdateComputerComponent):
+    pass

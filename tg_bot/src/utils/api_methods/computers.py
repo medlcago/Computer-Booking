@@ -43,15 +43,9 @@ class ComputerAPI:
                 if response.status == 200:
                     return await response.json()
 
-    async def update_computer_component(self, computer_id: int, **data):
+    async def update_computer_components(self, computer_id: int, **data):
         async with aiohttp.ClientSession() as session:
             async with session.patch(url=f"{self.url}/id{computer_id}", json=data, headers=self.headers) as response:
-                if response.status == 200:
-                    return await response.json()
-
-    async def update_computer(self, computer_id: int, **data):
-        async with aiohttp.ClientSession() as session:
-            async with session.put(url=f"{self.url}/id{computer_id}", json=data, headers=self.headers) as response:
                 if response.status == 200:
                     return await response.json()
 

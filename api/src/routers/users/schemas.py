@@ -46,7 +46,7 @@ class UpdatedUserDetails(UpdateUserDetails):
 
 
 class ChangeUserPassword(BaseModel):
-    password: str = Field(min_length=8, max_length=30, description="Текущий пароль")
+    current_password: str = Field(min_length=8, max_length=30, description="Текущий пароль")
     new_password: str = Field(min_length=8, max_length=30, description="Новый пароль")
 
     @field_validator("new_password")

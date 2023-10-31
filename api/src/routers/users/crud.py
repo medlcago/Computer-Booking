@@ -58,8 +58,8 @@ async def change_user_password(db: AsyncSession, data: dict, user_id: int):
     if user is None:
         raise HTTPException(status_code=404, detail="User not found.")
 
-    if auth_service.verify_password(data["password"], user.password):
-        if data["password"] == data["new_password"]:
+    if auth_service.verify_password(data["current_password"], user.password):
+        if data["current_password"] == data["new_password"]:
             raise HTTPException(status_code=400, detail="The new password must not match the old password.")
         user.password = auth_service.hash_password(data["new_password"])
         await db.commit()

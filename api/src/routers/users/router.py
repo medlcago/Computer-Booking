@@ -4,8 +4,13 @@ from fastapi import APIRouter, Depends, Body, Query, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from database import get_db
-from routers.users.schemas import CreateUser, ChangeUserPassword, ChangedUserPassword, UserResponse, \
-    UpdateUserDetails, UpdatedUserDetails
+from routers.users.schemas import (
+    CreateUser,
+    ChangeUserPassword,
+    ChangedUserPassword,
+    UserResponse,
+    UpdateUserDetails,
+    UpdatedUserDetails)
 from services.auth import auth_guard_key
 from . import crud
 

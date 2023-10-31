@@ -5,7 +5,9 @@ from fastapi import APIRouter, Depends, status, Body
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from database import get_db
-from routers.booking.schemas import BaseBooking, BookingResponse
+from routers.booking.schemas import (
+    BaseBooking,
+    BookingResponse)
 from services.auth import auth_guard_key
 from . import crud
 

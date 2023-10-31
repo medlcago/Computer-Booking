@@ -4,7 +4,12 @@ from fastapi import APIRouter, Depends, Body, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from database import get_db
-from routers.computers.schemas import BaseComputer, Categories, UpdateComputerComponent, ComputerResponse
+from routers.computers.schemas import (
+    BaseComputer,
+    Categories,
+    UpdateComputerComponent,
+    ComputerResponse,
+    UpdatedComputerComponent)
 from services.auth import auth_guard_key
 from . import crud
 
@@ -44,33 +49,13 @@ async def get_all_computers(limit: int = None, db: AsyncSession = Depends(get_db
     return await crud.get_all_computers(db=db, limit=limit)
 
 
-@router.patch("/id{computer_id}", response_model=ComputerResponse,
-              summary="Сменить информацию о компоненте компьютера по его идентификатору")
-async def update_computer_component(computer_id: int,
-                                    data: Annotated[UpdateComputerComponent, Body(examples=[
-                                        {
-                                            "component_name": "cpu",
-                                            "component_value": "AMD Ryzen 5 5600x"
-                                        }
-                                    ])],
-                                    db: AsyncSession = Depends(get_db)):
-    return await crud.update_computer_component(db=db, data=data.model_dump(), computer_id=computer_id)
-
-
-@router.put("/id{computer_id}", response_model=ComputerResponse,
-            summary="Сменить всю информацию о компьютере по его идентификатору")
-async def update_computer(computer_id: int, data: Annotated[BaseComputer, Body(examples=[{
-    "computer_id": 1000,
-    "brand": "IRU",
-    "model": "310H5GMA",
-    "cpu": "Intel Core i5 11400F",
-    "ram": 16,
-    "storage": 1024,
-    "gpu": "NVIDIA GeForce RTX 3060",
-    "description": None,
-    "category": "VIP"
-}])], db: AsyncSession = Depends(get_db)):
-    return await crud.update_computer(db=db, data=data.model_dump(), computer_id=computer_id)
+@router.patch("/id{computer_id}", response_model=UpdatedComputerComponent, response_model_exclude_unset=True,
+              summary="Обновить информацию о компьютере по его идентификатору")
+async def update_computer_components(computer_id: int,
+                                     data: UpdateComputerComponent,
+                                     db: AsyncSession = Depends(get_db)):
+    return await crud.update_computer_components(db=db, data=data.model_dump(exclude_unset=True),
+                                                 computer_id=computer_id)
 
 
 @router.delete("/id{computer_id}", summary="Удалить компьютер по его идентификатору")
