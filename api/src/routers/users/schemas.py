@@ -16,6 +16,12 @@ class BaseUser(BaseModel):
 
 class UserResponse(BaseUser):
     created_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_at: datetime = Field(default_factory=datetime.utcnow)
+    email_address: EmailStr | None = Field(default=None)
+    is_admin: bool | None = Field(default=None)
+    is_blocked: bool | None = Field(default=None)
+    is_active: bool | None = Field(default=None)
+    balance: int | None = Field(default=None)
 
 
 class CreateUser(BaseUser):

@@ -53,7 +53,7 @@ async def get_user_by_id(db: AsyncSession, user_id: int) -> User:
     return user
 
 
-async def change_user_password(db: AsyncSession, data: dict, user_id: int):
+async def change_user_password(db: AsyncSession, data: dict, user_id: int) -> ChangedUserPassword:
     user = await db.scalar(select(User).filter_by(user_id=user_id))
     if user is None:
         raise HTTPException(status_code=404, detail="User not found.")
