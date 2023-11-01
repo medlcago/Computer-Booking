@@ -23,20 +23,24 @@ class ComputerAPI:
                 if response.status == 200:
                     return await response.json()
 
-    async def get_computers_by_category(self, category: str, limit: int | None = None):
+    async def get_computers_by_category(self, category: str, limit: int | None = None, is_reserved: bool | None = None):
         params = {}
         if limit is not None:
             params["limit"] = limit
+        if is_reserved is not None:
+            params["is_reserved"] = is_reserved
 
         async with aiohttp.ClientSession() as session:
             async with session.get(url=f"{self.url}/{category}", params=params, headers=self.headers) as response:
                 if response.status == 200:
                     return await response.json()
 
-    async def get_all_computers(self, limit: int | None = None):
+    async def get_all_computers(self, limit: int | None = None, is_reserved: bool | None = None):
         params = {}
         if limit is not None:
             params["limit"] = limit
+        if is_reserved is not None:
+            params["is_reserved"] = is_reserved
 
         async with aiohttp.ClientSession() as session:
             async with session.get(url=self.url + "/", params=params, headers=self.headers) as response:

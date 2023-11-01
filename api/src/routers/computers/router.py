@@ -45,8 +45,8 @@ async def get_computers_by_category(category: Categories, limit: int | None = No
 
 
 @router.get("/", response_model=list[ComputerResponse], summary="Получение информации о всех компьютерах")
-async def get_all_computers(limit: int = None, db: AsyncSession = Depends(get_db)):
-    return await crud.get_all_computers(db=db, limit=limit)
+async def get_all_computers(limit: int = None, is_reserved: bool = None, db: AsyncSession = Depends(get_db)):
+    return await crud.get_all_computers(db=db, limit=limit, is_reserved=is_reserved)
 
 
 @router.patch("/id{computer_id}", response_model=UpdatedComputerComponent, response_model_exclude_unset=True,

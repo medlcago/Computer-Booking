@@ -30,24 +30,30 @@ async def get_computer_by_id(db: AsyncSession, computer_id: int) -> Computer:
     return computer
 
 
-async def get_computers_by_category(db: AsyncSession, category: Categories, limit: int = None) -> Sequence[Computer]:
+async def get_computers_by_category(db: AsyncSession, category: Categories, limit: int = None, is_reserved: bool = None) -> Sequence[Computer]:
     if limit:
         stmt = select(Computer).options(selectinload(Computer.bookings)).filter_by(category=category).limit(limit=limit)
     else:
         stmt = select(Computer).options(selectinload(Computer.bookings)).filter_by(category=category)
+
+    if is_reserved is not None:
+        stmt = stmt.filter_by(is_reserved=is_reserved)
 
     result = await db.execute(stmt)
     computers = result.scalars().all()
     return computers
 
 
-async def get_all_computers(db: AsyncSession, limit: int = None) -> Sequence[Computer]:
+async def get_all_computers(db: AsyncSession, limit: int = None, is_reserved: bool = None) -> Sequence[Computer]:
     if limit:
         stmt = select(Computer).options(selectinload(Computer.bookings)).limit(limit=limit).order_by(
             Computer.ram, Computer.id)
     else:
         stmt = select(Computer).options(selectinload(Computer.bookings)).order_by(
             Computer.ram, Computer.id)
+
+    if is_reserved is not None:
+        stmt = stmt.filter_by(is_reserved=is_reserved)
 
     result = await db.execute(stmt)
     computers = result.scalars().all()
