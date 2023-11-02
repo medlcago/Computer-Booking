@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import BIGINT, ForeignKey, TIMESTAMP, MetaData, String, CheckConstraint
+from sqlalchemy import BIGINT, ForeignKey, TIMESTAMP, MetaData, String, CheckConstraint, text, func
 from sqlalchemy.orm import relationship, declarative_base, Mapped, mapped_column
 
 metadata = MetaData()
@@ -20,10 +20,16 @@ class User(Base):
     is_blocked: Mapped[bool] = mapped_column(default=False)
     is_active: Mapped[bool] = mapped_column(default=True)
     balance: Mapped[int] = mapped_column(CheckConstraint("balance >= 0"), default=0)
-    created_at: Mapped[datetime] = mapped_column(TIMESTAMP(timezone=True), default=datetime.utcnow)
-    updated_at: Mapped[datetime] = mapped_column(TIMESTAMP(timezone=True),
-                                                 default=datetime.utcnow,
-                                                 onupdate=datetime.utcnow)
+
+    created_at: Mapped[datetime] = mapped_column(
+        TIMESTAMP(timezone=True),
+        default=text(f"({func.now()} AT TIME ZONE 'UTC')"))
+
+    updated_at: Mapped[datetime] = mapped_column(
+        TIMESTAMP(timezone=True),
+        default=text(f"({func.now()} AT TIME ZONE 'UTC')"),
+        onupdate=text(f"({func.now()} AT TIME ZONE 'UTC')")
+    )
 
     bookings: Mapped[list["Booking"]] = relationship(
         back_populates="user",

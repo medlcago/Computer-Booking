@@ -1,7 +1,7 @@
 """Creating tables
 
 Revision ID: ae87d7bab257
-Revises: 
+Revises:
 Create Date: 2023-11-02 14:47:42.872537
 
 """
@@ -47,8 +47,8 @@ def upgrade() -> None:
     sa.Column('is_blocked', sa.Boolean(), default=False, nullable=False),
     sa.Column('is_active', sa.Boolean(), default=True, nullable=False),
     sa.Column('balance', sa.Integer(), CheckConstraint("balance >= 0"), default=0, nullable=False),
-    sa.Column('created_at', sa.TIMESTAMP(timezone=True), default=datetime.utcnow, nullable=False),
-    sa.Column('updated_at', sa.TIMESTAMP(timezone=True), default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False),
+    sa.Column('created_at', sa.TIMESTAMP(timezone=True), nullable=False),
+    sa.Column('updated_at', sa.TIMESTAMP(timezone=True), nullable=False),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('user_id')
     )
