@@ -12,8 +12,7 @@ class User(Base):
 
     id: Mapped[int] = mapped_column(BIGINT, primary_key=True, index=True)
     user_id: Mapped[int] = mapped_column(BIGINT, unique=True)
-    first_name: Mapped[str] = mapped_column(String(length=255))
-    last_name: Mapped[str] = mapped_column(String(length=255))
+    fullname: Mapped[str] = mapped_column(String(length=255))
     username: Mapped[str | None] = mapped_column(String(length=255))
     email_address: Mapped[str | None] = mapped_column(String(length=255))
     password: Mapped[str] = mapped_column(String(length=255))
@@ -34,8 +33,7 @@ class User(Base):
 class Computer(Base):
     __tablename__ = 'computers'
 
-    id: Mapped[int] = mapped_column(BIGINT, primary_key=True, index=True)
-    computer_id: Mapped[int] = mapped_column(BIGINT, unique=True)
+    computer_id: Mapped[int] = mapped_column(BIGINT, primary_key=True, index=True)
     brand: Mapped[str] = mapped_column(String(length=255))
     model: Mapped[str] = mapped_column(String(length=255))
     cpu: Mapped[str] = mapped_column(String(length=255))

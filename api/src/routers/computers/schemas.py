@@ -9,7 +9,6 @@ class Categories(str, Enum):
 
 
 class BaseComputer(BaseModel):
-    computer_id: int
     brand: str
     model: str
     cpu: str
@@ -25,6 +24,7 @@ class BaseComputer(BaseModel):
 
 
 class ComputerResponse(BaseComputer):
+    computer_id: int
     is_reserved: bool = Field(default=False)
 
 

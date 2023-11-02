@@ -50,7 +50,7 @@ async def get_all_computers(db: AsyncSession, limit: int = None, is_reserved: bo
             Computer.ram, Computer.id)
     else:
         stmt = select(Computer).options(selectinload(Computer.bookings)).order_by(
-            Computer.ram, Computer.id)
+            Computer.ram, Computer.computer_id)
 
     if is_reserved is not None:
         stmt = stmt.filter_by(is_reserved=is_reserved)

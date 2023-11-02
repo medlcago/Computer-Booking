@@ -22,8 +22,7 @@ router = APIRouter(prefix="/users", tags=["User Operation"], dependencies=[Depen
 async def create_user(
         data: Annotated[CreateUser, Body(examples=[{
             "user_id": 1000,
-            "first_name": "Alexander",
-            "last_name": "Korolev",
+            "fullname": "Alexander Korolev",
             "username": "medlcago",
             "email_address": "medlcago@example.com",
             "password": "28DxTiPdux"

@@ -19,7 +19,6 @@ router = APIRouter(prefix="/computers", tags=["Computer Operation"], dependencie
 @router.post("/", response_model=ComputerResponse, summary="Добавить новый компьютер",
              status_code=status.HTTP_201_CREATED)
 async def add_new_computer(data: Annotated[BaseComputer, Body(examples=[{
-    "computer_id": 1000,
     "brand": "IRU",
     "model": "310H5GMA",
     "cpu": "Intel Core i5 11400F",
