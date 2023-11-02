@@ -44,6 +44,7 @@ class Computer(Base):
     gpu: Mapped[str] = mapped_column(String(length=255))
     description: Mapped[str | None] = mapped_column(String(length=255), default=None)
     category: Mapped[str] = mapped_column(String(length=255))
+    price_per_hour: Mapped[int] = mapped_column(nullable=False)
     is_reserved: Mapped[bool] = mapped_column(default=False)
 
     bookings: Mapped[list["Booking"]] = relationship(

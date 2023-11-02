@@ -18,6 +18,7 @@ class BaseComputer(BaseModel):
     gpu: str
     description: str | None = Field(default=None, max_length=256)
     category: Categories
+    price_per_hour: int
 
     class Config:
         from_attributes = True

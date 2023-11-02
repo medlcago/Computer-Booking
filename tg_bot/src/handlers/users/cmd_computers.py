@@ -12,6 +12,9 @@ router = Router()
 @router.message(Command(commands="computers"))
 async def command_computers(message: types.Message, computer_api: ComputerAPI, state: FSMContext):
     computers = await computer_api.get_all_computers()
+    if not computers:
+        await message.reply("На данный момент доступных компьютеров нет.")
+        return
     await state.update_data(computers=computers)
 
     page = 1

@@ -27,7 +27,8 @@ async def add_new_computer(data: Annotated[BaseComputer, Body(examples=[{
     "storage": 1024,
     "gpu": "NVIDIA GeForce RTX 3060",
     "description": "Gaming powerhouse with high refresh rate display and powerful GPU.",
-    "category": "VIP"
+    "category": "VIP",
+    "price_per_hour": 100
 }])], db: AsyncSession = Depends(get_db)):
     return await crud.add_new_computer(db=db, data=data.model_dump(exclude_none=True))
 

@@ -5,7 +5,15 @@ from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 
 from api.models.models import metadata
-from config import DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME
+from config import load_config
+
+config = load_config()
+
+DB_USER = config.db.user
+DB_PASSWORD = config.db.password
+DB_HOST = config.db.host
+DB_PORT = config.db.port
+DB_NAME = config.db.database_name
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
