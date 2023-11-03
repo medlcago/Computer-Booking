@@ -24,7 +24,7 @@ async def create_user(
             "user_id": 1000,
             "fullname": "Alexander Korolev",
             "username": "medlcago",
-            "email_address": "medlcago@example.com",
+            "phone_number": "+79064430200",
             "password": "28DxTiPdux"
         }])],
         db: AsyncSession = Depends(get_db)):

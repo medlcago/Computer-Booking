@@ -5,7 +5,8 @@ from aiogram import Bot, Dispatcher
 from aiogram.fsm.storage.redis import RedisStorage
 
 from config import load_config
-from handlers.users import command_computers_router
+from handlers.users import command_computers_router, command_start_router
+from middlewares import UserRegistrationMiddleware
 from utils.api_methods import UserAPI, ComputerAPI, BookingAPI
 
 
@@ -16,7 +17,10 @@ async def main():
 
     dp = Dispatcher(storage=storage)
 
+    dp.include_router(command_start_router)
     dp.include_router(command_computers_router)
+
+    dp.message.middleware(UserRegistrationMiddleware())
 
     logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s: %(message)s',
                         datefmt='%d.%m.%Y %H:%M:%S')

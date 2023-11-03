@@ -15,7 +15,7 @@ class BaseComputer(BaseModel):
     ram: int
     storage: int
     gpu: str
-    description: str | None = Field(default=None, max_length=256)
+    description: str | None = Field(default=None, max_length=255)
     category: Categories
     price_per_hour: int
 

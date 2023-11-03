@@ -1,13 +1,13 @@
 from datetime import datetime
 
-from pydantic import BaseModel, Field, field_validator, EmailStr
+from pydantic import BaseModel, Field, field_validator
 
 
 class BaseUser(BaseModel):
     user_id: int
     fullname: str
     username: str | None = Field(default=None)
-    email_address: EmailStr | None = Field(default=None)
+    phone_number: str
 
     class Config:
         from_attributes = True
@@ -16,7 +16,7 @@ class BaseUser(BaseModel):
 class UserResponse(BaseUser):
     created_at: datetime = Field(default_factory=datetime.utcnow)
     updated_at: datetime = Field(default_factory=datetime.utcnow)
-    email_address: EmailStr | None = Field(default=None)
+    phone_number: str = Field(default=None)
     is_admin: bool | None = Field(default=None)
     is_blocked: bool | None = Field(default=None)
     is_active: bool | None = Field(default=None)
@@ -39,7 +39,7 @@ class CreateUser(BaseUser):
 
 
 class UpdateUserDetails(BaseModel):
-    email_address: EmailStr | None = Field(default=None)
+    phone_number: str | None = Field(default=None)
     is_admin: bool | None = Field(default=None)
     is_blocked: bool | None = Field(default=None)
     is_active: bool | None = Field(default=None)

@@ -14,7 +14,7 @@ class User(Base):
     user_id: Mapped[int] = mapped_column(BIGINT, unique=True)
     fullname: Mapped[str] = mapped_column(String(length=255))
     username: Mapped[str | None] = mapped_column(String(length=255))
-    email_address: Mapped[str | None] = mapped_column(String(length=255))
+    phone_number: Mapped[str] = mapped_column(String(length=255))
     password: Mapped[str] = mapped_column(String(length=255))
     is_admin: Mapped[bool] = mapped_column(default=False)
     is_blocked: Mapped[bool] = mapped_column(default=False)
@@ -23,12 +23,12 @@ class User(Base):
 
     created_at: Mapped[datetime] = mapped_column(
         TIMESTAMP(timezone=True),
-        default=text(f"({func.now()} AT TIME ZONE 'UTC')"))
-
+        server_default=text("TIMEZONE('utc', now())")
+    )
     updated_at: Mapped[datetime] = mapped_column(
         TIMESTAMP(timezone=True),
-        default=text(f"({func.now()} AT TIME ZONE 'UTC')"),
-        onupdate=text(f"({func.now()} AT TIME ZONE 'UTC')")
+        server_default=text("TIMEZONE('utc', now())"),
+        onupdate=text("TIMEZONE('utc', now())")
     )
 
     bookings: Mapped[list["Booking"]] = relationship(

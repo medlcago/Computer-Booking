@@ -1,16 +1,14 @@
 """Creating tables
 
 Revision ID: ae87d7bab257
-Revises:
-Create Date: 2023-11-02 14:47:42.872537
+Revises: 
+Create Date: 2023-11-02 20:46:00.472825
 
 """
-from datetime import datetime
 from typing import Sequence, Union
 
 from alembic import op
 import sqlalchemy as sa
-from sqlalchemy import CheckConstraint
 
 # revision identifiers, used by Alembic.
 revision: str = 'ae87d7bab257'
@@ -32,7 +30,7 @@ def upgrade() -> None:
     sa.Column('description', sa.String(length=255), nullable=True),
     sa.Column('category', sa.String(length=255), nullable=False),
     sa.Column('price_per_hour', sa.Integer(), nullable=False),
-    sa.Column('is_reserved', sa.Boolean(), nullable=False),
+    sa.Column('is_reserved', sa.Boolean(), default=False, nullable=False),
     sa.PrimaryKeyConstraint('computer_id')
     )
     op.create_index(op.f('ix_computers_computer_id'), 'computers', ['computer_id'], unique=False)
@@ -41,14 +39,14 @@ def upgrade() -> None:
     sa.Column('user_id', sa.BIGINT(), nullable=False),
     sa.Column('fullname', sa.String(length=255), nullable=False),
     sa.Column('username', sa.String(length=255), nullable=True),
-    sa.Column('email_address', sa.String(length=255), nullable=True),
+    sa.Column('phone_number', sa.String(length=255), nullable=False),
     sa.Column('password', sa.String(length=255), nullable=False),
     sa.Column('is_admin', sa.Boolean(), default=False, nullable=False),
     sa.Column('is_blocked', sa.Boolean(), default=False, nullable=False),
     sa.Column('is_active', sa.Boolean(), default=True, nullable=False),
-    sa.Column('balance', sa.Integer(), CheckConstraint("balance >= 0"), default=0, nullable=False),
-    sa.Column('created_at', sa.TIMESTAMP(timezone=True), nullable=False),
-    sa.Column('updated_at', sa.TIMESTAMP(timezone=True), nullable=False),
+    sa.Column('balance', sa.Integer(), sa.CheckConstraint("balance >= 0"), default=0, nullable=False),
+    sa.Column('created_at', sa.TIMESTAMP(timezone=True), server_default=sa.text("TIMEZONE('utc', now())"), nullable=False),
+    sa.Column('updated_at', sa.TIMESTAMP(timezone=True), server_default=sa.text("TIMEZONE('utc', now())"), onupdate=sa.text("TIMEZONE('utc', now())"), nullable=False),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('user_id')
     )
