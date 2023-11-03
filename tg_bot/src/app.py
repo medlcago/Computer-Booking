@@ -5,7 +5,7 @@ from aiogram import Bot, Dispatcher
 from aiogram.fsm.storage.redis import RedisStorage
 
 from config import load_config
-from handlers.users import command_computers_router, command_start_router
+from handlers import users
 from middlewares import UserRegistrationMiddleware
 from utils.api_methods import UserAPI, ComputerAPI, BookingAPI
 
@@ -17,8 +17,11 @@ async def main():
 
     dp = Dispatcher(storage=storage)
 
-    dp.include_router(command_start_router)
-    dp.include_router(command_computers_router)
+    dp.include_router(users.command_start_router)
+    dp.include_router(users.show_main_menu_router)
+    dp.include_router(users.show_my_profile_router)
+    dp.include_router(users.top_up_balance_router)
+    dp.include_router(users.command_computers_router)
 
     dp.message.middleware(UserRegistrationMiddleware())
 
@@ -31,7 +34,9 @@ async def main():
         await dp.start_polling(bot,
                                user_api=UserAPI(base_url=config.api.base_url, api_key=config.api.api_key),
                                computer_api=ComputerAPI(base_url=config.api.base_url, api_key=config.api.api_key),
-                               booking_api=BookingAPI(base_url=config.api.base_url, api_key=config.api.api_key))
+                               booking_api=BookingAPI(base_url=config.api.base_url, api_key=config.api.api_key),
+                               config=config
+                               )
     except Exception as ex:
         logging.error(f"[!!! Exception] - {ex}", exc_info=True)
     finally:

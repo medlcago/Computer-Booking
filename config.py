@@ -21,7 +21,7 @@ class RedisConfig:
 @dataclass
 class TgBotConfig:
     token: str
-
+    provider_token: str
 
 @dataclass
 class ApiConfig:
@@ -43,7 +43,8 @@ def load_config(debug: bool = False, path: str | None = None) -> Config:
 
     return Config(
         tg=TgBotConfig(
-            token=env.str("BOT_TOKEN_DEBUG") if debug else env.str("BOT_TOKEN")
+            token=env.str("BOT_TOKEN_DEBUG") if debug else env.str("BOT_TOKEN"),
+            provider_token=env.str("PROVIDER_TOKEN")
         ),
 
         redis=RedisConfig(url=env.str("REDIS_URL")),

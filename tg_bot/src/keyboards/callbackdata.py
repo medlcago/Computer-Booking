@@ -8,3 +8,7 @@ class PageNumber(CallbackData, prefix="page"):
 
 class ComputerBooking(CallbackData, prefix="booking"):
     computer_id: int
+
+
+class TopUpBalance(CallbackData, prefix="top_up_balance"):
+    amount: int

@@ -1,6 +1,6 @@
-from aiogram import types, Router
-from aiogram.filters.command import Command
+from aiogram import Router, F
 from aiogram.fsm.context import FSMContext
+from aiogram.types import CallbackQuery
 
 from keyboards.inline_main import PageNumber
 from utils.api_methods import ComputerAPI
@@ -9,11 +9,11 @@ from utils.misc import generate_computer_message
 router = Router()
 
 
-@router.message(Command(commands="computers"))
-async def command_computers(message: types.Message, computer_api: ComputerAPI, state: FSMContext):
+@router.callback_query(F.data == "computer_list")
+async def command_computers(call: CallbackQuery, computer_api: ComputerAPI, state: FSMContext):
     computers = await computer_api.get_all_computers()
     if not computers:
-        await message.reply("На данный момент доступных компьютеров нет.")
+        await call.message.edit_text("На данный момент доступных компьютеров нет.")
         return
     await state.update_data(computers=computers)
 
@@ -21,11 +21,11 @@ async def command_computers(message: types.Message, computer_api: ComputerAPI, s
     total_pages = len(computers)
     computer = computers[page - 1]
     message_text, keyboard = generate_computer_message(computer, page, total_pages)
-    await message.answer(text=message_text, reply_markup=keyboard)
+    await call.message.edit_text(text=message_text, reply_markup=keyboard)
 
 
 @router.callback_query(PageNumber.filter())
-async def computers_pagination(call: types.CallbackQuery, callback_data: PageNumber, state: FSMContext):
+async def computers_pagination(call: CallbackQuery, callback_data: PageNumber, state: FSMContext):
     await call.answer()
     action = callback_data.action
     if action == "current":
