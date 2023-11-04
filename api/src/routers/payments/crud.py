@@ -3,7 +3,7 @@ from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from api.models.models import Payment
+from api.models import Payment
 
 
 async def create_payment(db: AsyncSession, data: dict):
