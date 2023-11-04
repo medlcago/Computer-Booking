@@ -33,7 +33,13 @@ class User(Base):
 
     bookings: Mapped[list["Booking"]] = relationship(
         back_populates="user",
-        cascade="all, delete-orphan")
+        cascade="all, delete-orphan"
+    )
+
+    payments: Mapped[list["Payment"]] = relationship(
+        back_populates="user",
+        cascade="all, delete-orphan"
+    )
 
 
 class Computer(Base):
@@ -67,3 +73,18 @@ class Booking(Base):
 
     user: Mapped["User"] = relationship(back_populates="bookings")
     computer: Mapped["Computer"] = relationship(back_populates="bookings")
+
+
+class Payment(Base):
+    __tablename__ = 'payments'
+
+    id: Mapped[int] = mapped_column(BIGINT, primary_key=True, index=True)
+    user_id: Mapped[int] = mapped_column(BIGINT, ForeignKey(User.user_id))
+    amount: Mapped[int]
+    payload: Mapped[str | None] = mapped_column(String(length=255))
+    created_at: Mapped[datetime] = mapped_column(
+        TIMESTAMP(timezone=True),
+        server_default=text("TIMEZONE('utc', now())")
+    )
+
+    user: Mapped["User"] = relationship(back_populates="payments")

@@ -7,7 +7,7 @@ from aiogram.fsm.storage.redis import RedisStorage
 from config import load_config
 from handlers import users
 from middlewares import UserRegistrationMiddleware
-from utils.api_methods import UserAPI, ComputerAPI, BookingAPI
+from utils.api_methods import UserAPI, ComputerAPI, BookingAPI, PaymentAPI
 
 
 async def main():
@@ -35,6 +35,7 @@ async def main():
                                user_api=UserAPI(base_url=config.api.base_url, api_key=config.api.api_key),
                                computer_api=ComputerAPI(base_url=config.api.base_url, api_key=config.api.api_key),
                                booking_api=BookingAPI(base_url=config.api.base_url, api_key=config.api.api_key),
+                               payment_api=PaymentAPI(base_url=config.api.base_url, api_key=config.api.api_key),
                                config=config
                                )
     except Exception as ex:

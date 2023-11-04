@@ -10,7 +10,8 @@ from routers.users.schemas import (
     ChangedUserPassword,
     UserResponse,
     UpdateUserDetails,
-    UpdatedUserDetails)
+    UpdatedUserDetails
+)
 from services.auth import auth_guard_key
 from . import crud
 
@@ -31,7 +32,7 @@ async def create_user(
     return await crud.create_user(db=db, data=data.model_dump())
 
 
-@router.patch("/id{user_id}/", response_model=UpdatedUserDetails, response_model_exclude_unset=True,
+@router.patch("/id{user_id}", response_model=UpdatedUserDetails, response_model_exclude_unset=True,
               summary="Обновление данных пользователя")
 async def update_user_details(user_id: int, data: UpdateUserDetails, db: AsyncSession = Depends(get_db)):
     return await crud.update_user_details(db=db, user_id=user_id, data=data.model_dump(exclude_unset=True))

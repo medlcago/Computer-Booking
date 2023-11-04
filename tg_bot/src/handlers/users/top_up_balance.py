@@ -6,7 +6,7 @@ from config import Config
 from keyboards.callbackdata import TopUpBalance
 from keyboards.inline_main import top_up_amount, back
 from templates.texts import TOP_UP_BALANCE
-from utils.api_methods import UserAPI
+from utils.api_methods import UserAPI, PaymentAPI
 
 router = Router()
 
@@ -28,7 +28,7 @@ async def send_invoice(call: CallbackQuery, callback_data: TopUpBalance, bot: Bo
         chat_id=call.message.chat.id,
         title=f"Пополнение счета на {amount} рублей.",
         description=f"После оплаты на ваш счет поступит {amount} рублей.",
-        payload=f"{call.from_user.id}_top_up_balance_{amount}rub",
+        payload=f"top_up_balance_{amount}rub_{call.from_user.id}",
         provider_token=config.tg.provider_token,
         currency="RUB",
         prices=[
@@ -43,15 +43,17 @@ async def send_invoice(call: CallbackQuery, callback_data: TopUpBalance, bot: Bo
     )
 
 
-@router.pre_checkout_query()
-async def pre_checkout_query(pre_checkout: PreCheckoutQuery, user_api: UserAPI):
+@router.pre_checkout_query(F.invoice_payload.startswith("top_up_balance"))
+async def pre_checkout_query(pre_checkout: PreCheckoutQuery, user_api: UserAPI, payment_api: PaymentAPI):
     user_id = pre_checkout.from_user.id
     amount = pre_checkout.total_amount // 100
+    payload = pre_checkout.invoice_payload
     user = await user_api.get_user_by_id(user_id=user_id)
     if user:
         current_balance = user.get("balance")
-        if await user_api.update_user_details(user_id=user_id, balance=current_balance + amount):
-            await pre_checkout.answer(ok=True)
+        if await payment_api.create_payment(user_id=user_id, amount=amount, payload=payload):
+            if await user_api.update_user_details(user_id=user_id, balance=current_balance + amount):
+                await pre_checkout.answer(ok=True)
         else:
             await pre_checkout.answer(ok=False, error_message="Не удалось проверить платеж 😔")
     else:
