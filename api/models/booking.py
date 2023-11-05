@@ -20,3 +20,9 @@ class Booking(Base):
 
     user: Mapped["User"] = relationship(back_populates="bookings")
     computer: Mapped["Computer"] = relationship(back_populates="bookings")
+
+    def __str__(self):
+        return f"{self.__class__.__name__}(id={self.id}, user_id={self.user_id!r}, computer_id={self.computer_id!r}, start_time={self.start_time!r}, end_time={self.end_time!r})"
+
+    def __repr__(self):
+        return str(self)

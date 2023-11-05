@@ -25,3 +25,9 @@ class Computer(Base):
     bookings: Mapped[list["Booking"]] = relationship(
         back_populates="computer",
         cascade="all, delete-orphan")
+
+    def __str__(self):
+        return f"{self.__class__.__name__}(computer_id={self.computer_id}, category={self.category!r}, price_per_hour={self.price_per_hour!r}, is_reserved={self.is_reserved!r})"
+
+    def __repr__(self):
+        return str(self)

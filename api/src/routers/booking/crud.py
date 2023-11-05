@@ -9,7 +9,7 @@ from api.models import Booking
 from api.models import Computer
 
 
-async def create_booking(db: AsyncSession, data: dict) -> Booking:
+async def create_computer_booking(db: AsyncSession, data: dict) -> Booking:
     try:
         computer_id = data.get("computer_id")
         computer = await db.get(Computer, computer_id)
@@ -29,7 +29,7 @@ async def create_booking(db: AsyncSession, data: dict) -> Booking:
         raise HTTPException(status_code=400, detail="Data integrity error when creating a booking.")
 
 
-async def get_all_bookings(db: AsyncSession, limit: int = None) -> Sequence[Booking]:
+async def get_all_computer_bookings(db: AsyncSession, limit: int = None) -> Sequence[Booking]:
     stmt = select(Booking)
     if limit:
         stmt = stmt.limit(limit=limit)
@@ -39,14 +39,14 @@ async def get_all_bookings(db: AsyncSession, limit: int = None) -> Sequence[Book
     return bookings
 
 
-async def get_bookings_by_user_id(db: AsyncSession, user_id: int) -> Sequence[Booking]:
+async def get_computer_bookings_by_user_id(db: AsyncSession, user_id: int) -> Sequence[Booking]:
     stmt = select(Booking).filter_by(user_id=user_id)
     result = await db.execute(stmt)
     bookings = result.scalars().all()
     return bookings
 
 
-async def delete_booking(db: AsyncSession, booking_id: int) -> dict:
+async def delete_computer_booking(db: AsyncSession, booking_id: int) -> dict:
     booking = await db.scalar(select(Booking).filter_by(id=booking_id))
     if booking is None:
         raise HTTPException(status_code=404, detail=f"Booking with ID {booking_id} not found.")

@@ -11,7 +11,7 @@ router = Router()
 
 @router.callback_query(F.data == "computer_list")
 async def command_computers(call: CallbackQuery, computer_api: ComputerAPI, state: FSMContext):
-    computers = await computer_api.get_all_computers()
+    computers = await computer_api.get_all_computers(is_reserved=False)
     if not computers:
         await call.message.edit_text("На данный момент доступных компьютеров нет.")
         return

@@ -42,3 +42,9 @@ class User(Base):
         back_populates="user",
         cascade="all, delete-orphan"
     )
+
+    def __str__(self):
+        return f"{self.__class__.__name__}(id={self.id}, user_id={self.user_id!r}, username={self.username!r}, phone_number={self.phone_number!r}, balance={self.balance!r})"
+
+    def __repr__(self):
+        return str(self)
