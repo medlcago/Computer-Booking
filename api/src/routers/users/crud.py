@@ -4,7 +4,6 @@ from fastapi import HTTPException
 from sqlalchemy import select, update
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import selectinload
 
 from api.models import User
 from routers.users.schemas import ChangedUserPassword
@@ -34,10 +33,9 @@ async def update_user_details(db: AsyncSession, user_id: int, data: dict) -> dic
 
 
 async def get_all_users(db: AsyncSession, limit: int = None) -> Sequence[User]:
+    stmt = select(User)
     if limit:
-        stmt = select(User).options(selectinload(User.bookings)).limit(limit=limit)
-    else:
-        stmt = select(User).options(selectinload(User.bookings))
+        stmt = stmt.limit(limit=limit)
 
     result = await db.execute(stmt)
     users = result.scalars().all()
@@ -45,7 +43,7 @@ async def get_all_users(db: AsyncSession, limit: int = None) -> Sequence[User]:
 
 
 async def get_user_by_id(db: AsyncSession, user_id: int) -> User:
-    stmt = select(User).options(selectinload(User.bookings)).filter_by(user_id=user_id)
+    stmt = select(User).filter_by(user_id=user_id)
     result = await db.execute(stmt)
     user = result.scalar()
     if user is None:

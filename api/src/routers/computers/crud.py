@@ -4,10 +4,10 @@ from fastapi import HTTPException
 from sqlalchemy import select, update
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import selectinload
 
 from api.models import Computer
 from routers.computers.schemas import Categories
+from routers.computers.utils import update_reserved_status
 
 
 async def add_new_computer(db: AsyncSession, data: dict) -> Computer:
@@ -21,7 +21,9 @@ async def add_new_computer(db: AsyncSession, data: dict) -> Computer:
 
 
 async def get_computer_by_id(db: AsyncSession, computer_id: int) -> Computer:
-    stmt = select(Computer).options(selectinload(Computer.bookings))
+    await update_reserved_status(db=db, computer_id=computer_id)
+
+    stmt = select(Computer)
     result = await db.execute(stmt)
     computer = result.scalar()
 
@@ -31,10 +33,11 @@ async def get_computer_by_id(db: AsyncSession, computer_id: int) -> Computer:
 
 
 async def get_computers_by_category(db: AsyncSession, category: Categories, limit: int = None, is_reserved: bool = None) -> Sequence[Computer]:
+    await update_reserved_status(db=db, category=category)
+
+    stmt = select(Computer).filter_by(category=category).order_by(Computer.ram, Computer.computer_id)
     if limit:
-        stmt = select(Computer).options(selectinload(Computer.bookings)).filter_by(category=category).limit(limit=limit)
-    else:
-        stmt = select(Computer).options(selectinload(Computer.bookings)).filter_by(category=category)
+        stmt = stmt.limit(limit=limit)
 
     if is_reserved is not None:
         stmt = stmt.filter_by(is_reserved=is_reserved)
@@ -45,12 +48,11 @@ async def get_computers_by_category(db: AsyncSession, category: Categories, limi
 
 
 async def get_all_computers(db: AsyncSession, limit: int = None, is_reserved: bool = None) -> Sequence[Computer]:
+    await update_reserved_status(db=db)
+
+    stmt = select(Computer).order_by(Computer.ram, Computer.computer_id)
     if limit:
-        stmt = select(Computer).options(selectinload(Computer.bookings)).limit(limit=limit).order_by(
-            Computer.ram, Computer.id)
-    else:
-        stmt = select(Computer).options(selectinload(Computer.bookings)).order_by(
-            Computer.ram, Computer.computer_id)
+        stmt = stmt.limit(limit=limit)
 
     if is_reserved is not None:
         stmt = stmt.filter_by(is_reserved=is_reserved)

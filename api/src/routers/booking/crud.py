@@ -4,14 +4,24 @@ from fastapi import HTTPException
 from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import selectinload
 
 from api.models import Booking
+from api.models import Computer
 
 
 async def create_booking(db: AsyncSession, data: dict) -> Booking:
     try:
-        booking = Booking(**data)
+        computer_id = data.get("computer_id")
+        computer = await db.get(Computer, computer_id)
+
+        if computer is None:
+            raise HTTPException(status_code=404, detail=f"Computer with ID {computer_id} not found.")
+
+        if computer.is_reserved:
+            raise HTTPException(status_code=400, detail=f"Computer with ID {computer_id} is already reserved.")
+
+        computer.is_reserved = True
+        booking = Booking(**data, computer=computer)
         db.add(booking)
         await db.commit()
         return booking
@@ -20,17 +30,17 @@ async def create_booking(db: AsyncSession, data: dict) -> Booking:
 
 
 async def get_all_bookings(db: AsyncSession, limit: int = None) -> Sequence[Booking]:
+    stmt = select(Booking)
     if limit:
-        stmt = select(Booking).options(selectinload(Booking.user), selectinload(Booking.computer)).limit(limit=limit)
-    else:
-        stmt = select(Booking).options(selectinload(Booking.user), selectinload(Booking.computer))
+        stmt = stmt.limit(limit=limit)
+
     result = await db.execute(stmt)
     bookings = result.scalars().all()
     return bookings
 
 
 async def get_bookings_by_user_id(db: AsyncSession, user_id: int) -> Sequence[Booking]:
-    stmt = select(Booking).options(selectinload(Booking.user), selectinload(Booking.computer)).filter_by(user_id=user_id)
+    stmt = select(Booking).filter_by(user_id=user_id)
     result = await db.execute(stmt)
     bookings = result.scalars().all()
     return bookings
