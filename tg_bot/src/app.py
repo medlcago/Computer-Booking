@@ -21,7 +21,9 @@ async def main():
     dp.include_router(users.show_main_menu_router)
     dp.include_router(users.show_my_profile_router)
     dp.include_router(users.top_up_balance_router)
-    dp.include_router(users.command_computers_router)
+    dp.include_router(users.computer_list_router)
+    dp.include_router(users.show_my_orders_router)
+    dp.include_router(users.computer_booking_router)
 
     dp.message.middleware(UserRegistrationMiddleware())
 

@@ -14,4 +14,4 @@ class BaseBooking(BaseModel):
 
 
 class BookingResponse(BaseBooking):
-    pass
+    id: int

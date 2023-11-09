@@ -1,2 +1,3 @@
 from .generate_computer_message import generate_computer_message
+from .generate_order_message import generate_order_message
 from .generate_user_password import generate_user_password

@@ -3,16 +3,16 @@ from aiogram.utils.keyboard import InlineKeyboardBuilder, InlineKeyboardMarkup, 
 from keyboards.callbackdata import PageNumber, TopUpBalance
 
 
-def generate_pagination_keyboard_builder(page: int, total_pages: int) -> InlineKeyboardBuilder:
+def generate_pagination_keyboard_builder(page: int, total_pages: int, page_type: str) -> InlineKeyboardBuilder:
     builder = InlineKeyboardBuilder()
 
     if page > 1:
-        builder.button(text="◀️", callback_data=PageNumber(action="prev", page=page))
+        builder.button(text="◀️", callback_data=PageNumber(action="prev", page=page, page_type=page_type))
         if page < total_pages:
-            builder.button(text=f"{page}/{total_pages}", callback_data=PageNumber(action="current", page=page))
+            builder.button(text=f"{page}/{total_pages}", callback_data=PageNumber(action="current", page=page, page_type=page_type))
 
     if page < total_pages:
-        builder.button(text="▶️", callback_data=PageNumber(action="next", page=page))
+        builder.button(text="▶️", callback_data=PageNumber(action="next", page=page, page_type=page_type))
 
     return builder
 
@@ -24,7 +24,7 @@ main_menu_button = InlineKeyboardMarkup(inline_keyboard=[
 ])
 
 
-def back(callback_data: str, text: str = "🔙 Назад") -> InlineKeyboardMarkup:
+def generate_inline_keyboard(callback_data: str, text: str) -> InlineKeyboardMarkup:
     keyboard = InlineKeyboardMarkup(inline_keyboard=[
         [
             InlineKeyboardButton(text=text, callback_data=callback_data)

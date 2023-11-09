@@ -2,6 +2,7 @@ from aiogram.filters.callback_data import CallbackData
 
 
 class PageNumber(CallbackData, prefix="page"):
+    page_type: str
     action: str
     page: int
 

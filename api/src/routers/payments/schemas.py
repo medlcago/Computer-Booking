@@ -11,4 +11,4 @@ class CreatePayment(BaseModel):
 
 
 class PaymentResponse(CreatePayment):
-    pass
+    id: int
