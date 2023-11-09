@@ -23,7 +23,7 @@ async def add_new_computer(db: AsyncSession, data: dict) -> Computer:
 async def get_computer_by_id(db: AsyncSession, computer_id: int) -> Computer:
     await update_reserved_status(db=db, computer_id=computer_id)
 
-    stmt = select(Computer)
+    stmt = select(Computer).filter_by(computer_id=computer_id)
     result = await db.execute(stmt)
     computer = result.scalar()
 
