@@ -17,13 +17,9 @@ class BookingAPI:
                 if response.status == 201:
                     return await response.json()
 
-    async def get_all_computer_bookings(self, limit: int | None = None):
-        params = {}
-        if limit is not None:
-            params["limit"] = limit
-
+    async def get_all_computer_bookings(self):
         async with aiohttp.ClientSession() as session:
-            async with session.get(url=self.url + "/", params=params, headers=self.headers) as response:
+            async with session.get(url=self.url + "/", headers=self.headers) as response:
                 if response.status == 200:
                     return await response.json()
 

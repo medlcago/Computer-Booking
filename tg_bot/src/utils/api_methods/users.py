@@ -23,10 +23,19 @@ class UserAPI:
                 if response.status == 200:
                     return await response.json()
 
-    async def get_all_users(self, *, limit: int | None = None):
+    async def get_all_users(self, *,
+                            is_admin: bool | None = None,
+                            is_blocked: bool | None = None,
+                            is_active: bool | None = None):
         params = {}
-        if limit is not None:
-            params["limit"] = limit
+        if is_admin is not None:
+            params["is_admin"] = is_admin
+
+        if is_blocked is not None:
+            params["is_blocked"] = is_blocked
+
+        if is_active is not None:
+            params["is_active"] = is_active
 
         async with aiohttp.ClientSession() as session:
             async with session.get(url=self.url + "/", params=params, headers=self.headers) as response:
