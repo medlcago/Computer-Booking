@@ -39,13 +39,13 @@ async def get_all_users(
         is_blocked: bool | None = None,
         is_active: bool | None = None) -> Sequence[User]:
     stmt = select(User)
-    if is_admin:
+    if is_admin is not None:
         stmt = stmt.filter_by(is_admin=is_admin)
 
-    if is_blocked:
+    if is_blocked is not None:
         stmt = stmt.filter_by(is_blocked=is_blocked)
 
-    if is_active:
+    if is_active is not None:
         stmt = stmt.filter_by(is_active=is_active)
 
     result = await db.execute(stmt)
