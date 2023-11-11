@@ -29,18 +29,15 @@ async def create_computer_booking(db: AsyncSession, data: dict) -> Booking:
         raise HTTPException(status_code=400, detail="Data integrity error when creating a booking.")
 
 
-async def get_all_computer_bookings(db: AsyncSession, limit: int = None) -> Sequence[Booking]:
-    stmt = select(Booking)
-    if limit:
-        stmt = stmt.limit(limit=limit)
-
+async def get_all_computer_bookings(db: AsyncSession) -> Sequence[Booking]:
+    stmt = select(Booking).order_by(Booking.id)
     result = await db.execute(stmt)
     bookings = result.scalars().all()
     return bookings
 
 
 async def get_computer_bookings_by_user_id(db: AsyncSession, user_id: int) -> Sequence[Booking]:
-    stmt = select(Booking).filter_by(user_id=user_id)
+    stmt = select(Booking).filter_by(user_id=user_id).order_by(Booking.id)
     result = await db.execute(stmt)
     bookings = result.scalars().all()
     return bookings

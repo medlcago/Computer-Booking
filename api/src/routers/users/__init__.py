@@ -1,1 +1,1 @@
-from .router import router as user_operations_router
+from .router import router as user_router

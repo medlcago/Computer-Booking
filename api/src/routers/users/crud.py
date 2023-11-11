@@ -21,7 +21,7 @@ async def create_user(db: AsyncSession, data: dict) -> User:
         raise HTTPException(status_code=409, detail=f"User with ID {user.user_id} already exists.")
 
 
-async def update_user_details(db: AsyncSession, user_id: int, data: dict) -> dict:
+async def update_user_details(db: AsyncSession, user_id: int, data: dict) -> User:
     if data:
         stmt = update(User).filter_by(user_id=user_id).values(**data)
         result = await db.execute(stmt)
@@ -29,13 +29,24 @@ async def update_user_details(db: AsyncSession, user_id: int, data: dict) -> dic
         if result.rowcount == 0:
             raise HTTPException(status_code=404, detail=f"User with ID {user_id} not found.")
         await db.commit()
+        data = await db.scalar(select(User).filter_by(user_id=user_id))
     return data
 
 
-async def get_all_users(db: AsyncSession, limit: int = None) -> Sequence[User]:
+async def get_all_users(
+        db: AsyncSession,
+        is_admin: bool | None = None,
+        is_blocked: bool | None = None,
+        is_active: bool | None = None) -> Sequence[User]:
     stmt = select(User)
-    if limit:
-        stmt = stmt.limit(limit=limit)
+    if is_admin:
+        stmt = stmt.filter_by(is_admin=is_admin)
+
+    if is_blocked:
+        stmt = stmt.filter_by(is_blocked=is_blocked)
+
+    if is_active:
+        stmt = stmt.filter_by(is_active=is_active)
 
     result = await db.execute(stmt)
     users = result.scalars().all()

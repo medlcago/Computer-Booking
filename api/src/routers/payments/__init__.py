@@ -1,1 +1,1 @@
-from .router import router as payment_operations_router
+from .router import router as payment_router

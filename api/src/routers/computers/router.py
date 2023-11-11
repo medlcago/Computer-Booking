@@ -13,7 +13,7 @@ from routers.computers.schemas import (
 from services.auth import auth_guard_key
 from . import crud
 
-router = APIRouter(prefix="/computers", tags=["Computer Operation"], dependencies=[Depends(auth_guard_key)])
+router = APIRouter(prefix="/computers", tags=["Computers"], dependencies=[Depends(auth_guard_key)])
 
 
 @router.post("/", response_model=ComputerResponse, summary="Добавить новый компьютер",
@@ -40,20 +40,21 @@ async def get_computer_by_id(computer_id: int, db: AsyncSession = Depends(get_db
 
 @router.get("/{category}", response_model=list[ComputerResponse],
             summary="Получение информации о компьютерах конкретной категории")
-async def get_computers_by_category(category: Categories, limit: int | None = None, db: AsyncSession = Depends(get_db)):
-    return await crud.get_computers_by_category(db=db, category=category, limit=limit)
+async def get_computers_by_category(category: Categories, db: AsyncSession = Depends(get_db)):
+    return await crud.get_computers_by_category(db=db, category=category)
 
 
 @router.get("/", response_model=list[ComputerResponse], summary="Получение информации о всех компьютерах")
-async def get_all_computers(limit: int = None, is_reserved: bool = None, db: AsyncSession = Depends(get_db)):
-    return await crud.get_all_computers(db=db, limit=limit, is_reserved=is_reserved)
+async def get_all_computers(is_reserved: bool | None = None, db: AsyncSession = Depends(get_db)):
+    return await crud.get_all_computers(db=db, is_reserved=is_reserved)
 
 
 @router.patch("/id{computer_id}", response_model=UpdatedComputerComponent, response_model_exclude_unset=True,
               summary="Обновить информацию о компьютере по его идентификатору")
 async def update_computer_components(computer_id: int,
                                      data: UpdateComputerComponent,
-                                     db: AsyncSession = Depends(get_db)):
+                                     db: AsyncSession = Depends(get_db)
+                                     ):
     return await crud.update_computer_components(db=db, data=data.model_dump(exclude_unset=True),
                                                  computer_id=computer_id)
 

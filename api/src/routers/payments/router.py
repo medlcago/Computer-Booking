@@ -6,7 +6,7 @@ from routers.payments.schemas import CreatePayment, PaymentResponse
 from services.auth import auth_guard_key
 from . import crud
 
-router = APIRouter(prefix="/payments", tags=["Payment Operation"], dependencies=[Depends(auth_guard_key)])
+router = APIRouter(prefix="/payments", tags=["Payments"], dependencies=[Depends(auth_guard_key)])
 
 
 @router.post("/", response_model=PaymentResponse, summary="Создание нового платежа",

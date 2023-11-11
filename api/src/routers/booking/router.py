@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, status, Body
@@ -11,7 +11,7 @@ from routers.booking.schemas import (
 from services.auth import auth_guard_key
 from . import crud
 
-router = APIRouter(prefix="/bookings", tags=["Booking Operation"], dependencies=[Depends(auth_guard_key)])
+router = APIRouter(prefix="/bookings", tags=["Bookings"], dependencies=[Depends(auth_guard_key)])
 
 
 @router.post("/", response_model=BookingResponse, summary="Создать новый заказ", status_code=status.HTTP_201_CREATED)
@@ -20,15 +20,15 @@ async def create_computer_booking(
             "user_id": 1000,
             "computer_id": 15,
             "start_time": datetime.utcnow(),
-            "end_time": datetime.utcnow() + timedelta(hours=3)
+            "end_time": datetime.utcnow()
         }])],
         db: AsyncSession = Depends(get_db)):
     return await crud.create_computer_booking(db=db, data=data.model_dump())
 
 
 @router.get("/", response_model=list[BookingResponse], summary="Получить список всех заказов")
-async def get_all_computer_bookings(limit: int = None, db: AsyncSession = Depends(get_db)):
-    return await crud.get_all_computer_bookings(db=db, limit=limit)
+async def get_all_computer_bookings(db: AsyncSession = Depends(get_db)):
+    return await crud.get_all_computer_bookings(db=db)
 
 
 @router.get("/user/id{user_id}", response_model=list[BookingResponse], summary="Получить список заказов пользователя")

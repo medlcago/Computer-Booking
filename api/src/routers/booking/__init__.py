@@ -1,1 +1,1 @@
-from .router import router as booking_operations_router
+from .router import router as booking_router

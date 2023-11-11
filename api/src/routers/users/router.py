@@ -1,6 +1,6 @@
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, Body, Query, status
+from fastapi import APIRouter, Depends, Body, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from database import get_db
@@ -15,7 +15,7 @@ from routers.users.schemas import (
 from services.auth import auth_guard_key
 from . import crud
 
-router = APIRouter(prefix="/users", tags=["User Operation"], dependencies=[Depends(auth_guard_key)])
+router = APIRouter(prefix="/users", tags=["Users"], dependencies=[Depends(auth_guard_key)])
 
 
 @router.post("/", response_model=UserResponse, summary="Регистрация нового пользователя",
@@ -39,8 +39,12 @@ async def update_user_details(user_id: int, data: UpdateUserDetails, db: AsyncSe
 
 
 @router.get("/", response_model=list[UserResponse], summary="Получение информации о всех пользователях")
-async def get_all_users(limit: Annotated[int | None, Query(gt=0)] = None, db: AsyncSession = Depends(get_db)):
-    return await crud.get_all_users(db=db, limit=limit)
+async def get_all_users(
+        is_admin: bool | None = None,
+        is_blocked: bool | None = None,
+        is_active: bool | None = None,
+        db: AsyncSession = Depends(get_db)):
+    return await crud.get_all_users(db=db, is_admin=is_admin, is_blocked=is_blocked, is_active=is_active)
 
 
 @router.get("/id{user_id}", response_model=UserResponse,
