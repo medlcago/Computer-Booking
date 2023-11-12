@@ -6,7 +6,7 @@ from aiogram import Router
 from aiogram.types import CallbackQuery
 
 from keyboards.callbackdata import ComputerBooking
-from keyboards.inline_main import generate_inline_keyboard
+from keyboards.inline_utils import create_inline_keyboard
 from templates.texts import COMPUTER_BOOKING
 from utils.api_methods import BookingAPI
 from utils.api_methods import ComputerAPI
@@ -56,18 +56,12 @@ async def computer_booking(call: CallbackQuery,
         else:
             await call.message.answer(
                 text="На данный момент компьютер недоступен.",
-                reply_markup=generate_inline_keyboard(
-                    callback_data="show_menu",
-                    text="Вернуться в меню"
-                )
+                reply_markup=create_inline_keyboard(width=1, show_menu="Вернуться в меню")
             )
     else:
         await call.message.edit_text(
             text="На вашем балансе недостаточно средств. Пожалуйста, пополните баланс и повторите попытку.",
-            reply_markup=generate_inline_keyboard(
-                text="💲 Пополнить баланс",
-                callback_data="top_up_balance"
-            )
+            reply_markup=create_inline_keyboard(width=1, top_up_balance="💲 Пополнить баланс")
         )
 
     await call.answer(cache_time=60)

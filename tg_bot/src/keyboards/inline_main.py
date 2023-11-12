@@ -1,21 +1,6 @@
-from aiogram.utils.keyboard import InlineKeyboardBuilder, InlineKeyboardMarkup, InlineKeyboardButton
+from aiogram.utils.keyboard import InlineKeyboardMarkup, InlineKeyboardButton
 
-from keyboards.callbackdata import PageNumber, TopUpBalance
-
-
-def generate_pagination_keyboard_builder(page: int, total_pages: int, page_type: str) -> InlineKeyboardBuilder:
-    builder = InlineKeyboardBuilder()
-
-    if page > 1:
-        builder.button(text="◀️", callback_data=PageNumber(action="prev", page=page, page_type=page_type))
-        if page < total_pages:
-            builder.button(text=f"{page}/{total_pages}", callback_data=PageNumber(action="current", page=page, page_type=page_type))
-
-    if page < total_pages:
-        builder.button(text="▶️", callback_data=PageNumber(action="next", page=page, page_type=page_type))
-
-    return builder
-
+from keyboards.callbackdata import TopUpBalance
 
 main_menu_button = InlineKeyboardMarkup(inline_keyboard=[
     [
@@ -24,24 +9,17 @@ main_menu_button = InlineKeyboardMarkup(inline_keyboard=[
 ])
 
 
-def generate_inline_keyboard(callback_data: str, text: str) -> InlineKeyboardMarkup:
-    keyboard = InlineKeyboardMarkup(inline_keyboard=[
-        [
-            InlineKeyboardButton(text=text, callback_data=callback_data)
-        ]
-    ])
-
-    return keyboard
-
-
 def main_menu() -> InlineKeyboardMarkup:
     keyboard = InlineKeyboardMarkup(inline_keyboard=[
         [
-            InlineKeyboardButton(text="👤 Мой профиль", callback_data="my_profile")
+            InlineKeyboardButton(text="👤 Мой профиль", callback_data="my_profile"),
+            InlineKeyboardButton(text="💼 Мои заказы", callback_data="my_orders")
         ],
         [
-            InlineKeyboardButton(text="Список компьютеров", callback_data="computer_list"),
-            InlineKeyboardButton(text="Мои заказы", callback_data="my_orders")
+            InlineKeyboardButton(text="Список доступных компьютеров", callback_data="computer_available_list"),
+        ],
+        [
+            InlineKeyboardButton(text="Информация о всех компьютерах", callback_data="computer_list")
         ],
         [
             InlineKeyboardButton(text="💲 Пополнить баланс", callback_data="top_up_balance")
@@ -62,6 +40,52 @@ def top_up_amount() -> InlineKeyboardMarkup:
         ],
         [
             InlineKeyboardButton(text="Вернуться в меню", callback_data="show_menu")
+        ]
+    ])
+
+    return keyboard
+
+
+def admin_menu() -> InlineKeyboardMarkup:
+    keyboard = InlineKeyboardMarkup(inline_keyboard=[
+        [
+            InlineKeyboardButton(text="Управление пользователями", callback_data="user_management")
+        ],
+        [
+            InlineKeyboardButton(text="Управление компьютерами", callback_data="computer_management")
+        ],
+        [
+            InlineKeyboardButton(text="Управление бронированиями", callback_data="booking_management")
+        ],
+        [
+            InlineKeyboardButton(text="Управление платежами", callback_data="payment_management")
+        ],
+        [
+            InlineKeyboardButton(text="❌ Закрыть", callback_data="close")
+        ]
+    ])
+
+    return keyboard
+
+
+def user_management_menu() -> InlineKeyboardMarkup:
+    keyboard = InlineKeyboardMarkup(inline_keyboard=[
+        [
+            InlineKeyboardButton(text="Заблокировать", callback_data="block_user"),
+            InlineKeyboardButton(text="Разблокировать", callback_data="unblock_user")
+        ],
+        [
+            InlineKeyboardButton(text="Все пользователи [Excel]", callback_data="user_list"),
+            InlineKeyboardButton(text="Информация о пользователе", callback_data="info_about_user")
+        ],
+        [
+            InlineKeyboardButton(text="Все бронирования пользователя [Excel]", callback_data="info_about_user_bookings")
+        ],
+        [
+            InlineKeyboardButton(text="🔙 Вернуться в админ панель", callback_data="show_admin_menu")
+        ],
+        [
+            InlineKeyboardButton(text="❌ Закрыть", callback_data="close")
         ]
     ])
 

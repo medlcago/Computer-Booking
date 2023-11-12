@@ -1,3 +1,5 @@
+from .create_excel_file import create_bytes_excel_file
 from .generate_computer_message import generate_computer_message
+from .generate_info_about_user_message import generate_info_about_user_message
 from .generate_order_message import generate_order_message
 from .generate_user_password import generate_user_password

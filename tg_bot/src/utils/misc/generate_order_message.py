@@ -2,7 +2,7 @@ from datetime import datetime
 
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
-from keyboards.inline_main import generate_pagination_keyboard_builder
+from keyboards.inline_utils import create_pagination_keyboard_builder
 
 
 def generate_order_message(order: dict, page: int, total_pages: int) -> tuple[str, InlineKeyboardMarkup]:
@@ -11,7 +11,7 @@ def generate_order_message(order: dict, page: int, total_pages: int) -> tuple[st
     start_time = datetime.strptime(order.get("start_time"), "%Y-%m-%dT%H:%M:%S.%fZ").strftime("%d.%m.%Y %H:%M:%S")
     end_time = datetime.strptime(order.get("end_time"), "%Y-%m-%dT%H:%M:%S.%fZ").strftime("%d.%m.%Y %H:%M:%S")
 
-    keyboard = generate_pagination_keyboard_builder(page, total_pages, page_type="orders").copy()
+    keyboard = create_pagination_keyboard_builder(page, total_pages, page_type="orders").copy()
     keyboard.row(InlineKeyboardButton(
         text="Вернуться в меню",
         callback_data="show_menu")

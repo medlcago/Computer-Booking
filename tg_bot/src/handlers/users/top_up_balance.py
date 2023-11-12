@@ -4,7 +4,8 @@ from aiogram.types import CallbackQuery, LabeledPrice, Message, PreCheckoutQuery
 
 from config import Config
 from keyboards.callbackdata import TopUpBalance
-from keyboards.inline_main import top_up_amount, generate_inline_keyboard
+from keyboards.inline_main import top_up_amount
+from keyboards.inline_utils import create_inline_keyboard
 from templates.texts import TOP_UP_BALANCE
 from utils.api_methods import UserAPI, PaymentAPI
 
@@ -65,8 +66,5 @@ async def process_successful_payment(message: Message):
     amount = message.successful_payment.total_amount // 100
     await message.answer(
         text=f"Спасибо! Получен платёж на сумму <b>{amount} {message.successful_payment.currency}</b>",
-        reply_markup=generate_inline_keyboard(
-            callback_data="show_menu",
-            text="Вернуться в меню"
-        )
+        reply_markup=create_inline_keyboard(width=1, show_menu="Вернуться в меню")
     )

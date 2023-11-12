@@ -1,4 +1,5 @@
 from .cmd_start import router as command_start_router
+from .computer_available_list import router as computer_available_list_router
 from .computer_booking import router as computer_booking_router
 from .computer_list import router as computer_list_router
 from .show_main_menu import router as show_main_menu_router

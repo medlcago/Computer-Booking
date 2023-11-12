@@ -3,7 +3,7 @@ from aiogram.fsm.context import FSMContext
 from aiogram.types import CallbackQuery
 
 from keyboards.callbackdata import PageNumber
-from keyboards.inline_main import generate_inline_keyboard
+from keyboards.inline_utils import create_inline_keyboard
 from utils.api_methods import BookingAPI
 from utils.misc import generate_order_message
 
@@ -17,7 +17,7 @@ async def show_my_orders(call: CallbackQuery, booking_api: BookingAPI, state: FS
     if not orders:
         await call.message.edit_text(
             text="Список ваших заказов пуст.",
-            reply_markup=generate_inline_keyboard(callback_data="show_menu", text="Назад")
+            reply_markup=create_inline_keyboard(width=1, show_menu="Назад")
         )
         return
     await state.update_data(orders=orders)
