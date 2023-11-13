@@ -74,4 +74,4 @@ def load_config(debug: bool = False, path: str | None = None) -> Config:
     )
 
 
-config = load_config()
+config = load_config(debug=False)

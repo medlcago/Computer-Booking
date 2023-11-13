@@ -66,5 +66,8 @@ async def process_successful_payment(message: Message):
     amount = message.successful_payment.total_amount // 100
     await message.answer(
         text=f"Спасибо! Получен платёж на сумму <b>{amount} {message.successful_payment.currency}</b>",
-        reply_markup=create_inline_keyboard(width=1, show_menu="Вернуться в меню")
+        reply_markup=create_inline_keyboard(
+            width=1,
+            my_profile="👤 Мой профиль",
+            show_menu="Вернуться в меню")
     )

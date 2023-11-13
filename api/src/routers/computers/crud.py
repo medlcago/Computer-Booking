@@ -35,7 +35,7 @@ async def get_computer_by_id(db: AsyncSession, computer_id: int) -> Computer:
 async def get_computers_by_category(db: AsyncSession, category: Categories, is_reserved: bool | None = None) -> Sequence[Computer]:
     await update_reserved_status(db=db, category=category)
 
-    stmt = select(Computer).filter_by(category=category).order_by(Computer.ram, Computer.computer_id)
+    stmt = select(Computer).filter_by(category=category).order_by(Computer.computer_id)
     if is_reserved is not None:
         stmt = stmt.filter_by(is_reserved=is_reserved)
 
@@ -47,7 +47,7 @@ async def get_computers_by_category(db: AsyncSession, category: Categories, is_r
 async def get_all_computers(db: AsyncSession, is_reserved: bool | None = None) -> Sequence[Computer]:
     await update_reserved_status(db=db)
 
-    stmt = select(Computer).order_by(Computer.ram, Computer.computer_id)
+    stmt = select(Computer).order_by(Computer.computer_id)
     if is_reserved is not None:
         stmt = stmt.filter_by(is_reserved=is_reserved)
 

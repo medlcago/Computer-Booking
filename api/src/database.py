@@ -1,5 +1,8 @@
+import asyncio
+
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession
 
+from api.models import Base
 from config import config
 
 engine = create_async_engine(url=config.db.db_url)
@@ -12,3 +15,19 @@ async def get_db() -> AsyncSession:
             yield session
     finally:
         await session.close()
+
+
+async def create_database():
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+    await engine.dispose()
+
+
+async def delete_database():
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.drop_all)
+    await engine.dispose()
+
+
+if __name__ == '__main__':
+    asyncio.run(create_database())
