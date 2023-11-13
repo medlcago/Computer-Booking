@@ -4,7 +4,7 @@ import logging
 from aiogram import Bot, Dispatcher
 from aiogram.fsm.storage.redis import RedisStorage
 
-from config import load_config
+from config import config
 from handlers import admins
 from handlers import cancel_handler_router
 from handlers import close_handler_router
@@ -16,7 +16,6 @@ from utils.api_methods import UserAPI, ComputerAPI, BookingAPI, PaymentAPI
 
 
 async def main():
-    config = load_config(debug := True)
     bot = Bot(token=config.tg.token, parse_mode="html")
     storage = RedisStorage.from_url(config.redis.url)
 
@@ -48,7 +47,7 @@ async def main():
 
     logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s: %(message)s',
                         datefmt='%d.%m.%Y %H:%M:%S')
-    logging.info(f"Bot running in {'DEBUG' if debug else 'RELEASE'} mode!")
+    logging.info(f"Bot running in {'DEBUG' if config.debug else 'RELEASE'} mode!")
 
     try:
         await bot.delete_webhook(drop_pending_updates=True)

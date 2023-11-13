@@ -5,9 +5,7 @@ from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 
 from api.models import Base
-from config import load_config
-
-config = load_config()
+from config import config
 
 DB_USER = config.db.user
 DB_PASSWORD = config.db.password

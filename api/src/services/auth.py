@@ -2,9 +2,7 @@ from fastapi import HTTPException
 from fastapi.requests import Request
 from passlib.hash import bcrypt
 
-from config import load_config
-
-config = load_config()
+from config import config
 
 
 class AuthGuard:

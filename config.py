@@ -23,6 +23,7 @@ class TgBotConfig:
     token: str
     provider_token: str
 
+
 @dataclass
 class ApiConfig:
     api_key: str
@@ -35,6 +36,7 @@ class Config:
     redis: RedisConfig
     db: DbConfig
     api: ApiConfig
+    debug: bool
 
 
 def load_config(debug: bool = False, path: str | None = None) -> Config:
@@ -43,13 +45,20 @@ def load_config(debug: bool = False, path: str | None = None) -> Config:
 
     return Config(
         tg=TgBotConfig(
-            token=env.str("BOT_TOKEN_DEBUG") if debug else env.str("BOT_TOKEN"),
+            token=env.str("BOT_TOKEN_TEST") if debug else env.str("BOT_TOKEN"),
             provider_token=env.str("PROVIDER_TOKEN")
         ),
 
         redis=RedisConfig(url=env.str("REDIS_URL")),
 
         db=DbConfig(
+            host=env.str("DB_HOST_TEST"),
+            port=env.str("DB_PORT_TEST"),
+            user=env.str("DB_USER_TEST"),
+            password=env.str("DB_PASSWORD_TEST"),
+            database_name=env.str("DB_NAME_TEST"),
+            db_url=f"postgresql+asyncpg://{env.str('DB_USER_TEST')}:{env.str('DB_PASSWORD_TEST')}@{env.str('DB_HOST_TEST')}:{env.str('DB_PORT_TEST')}/{env.str('DB_NAME_TEST')}")
+        if debug else DbConfig(
             host=env.str("DB_HOST"),
             port=env.str("DB_PORT"),
             user=env.str("DB_USER"),
@@ -60,5 +69,9 @@ def load_config(debug: bool = False, path: str | None = None) -> Config:
         api=ApiConfig(
             api_key=env.str("API_KEY"),
             base_url=env.str("BASE_URL")
-        )
+        ),
+        debug=debug
     )
+
+
+config = load_config()
