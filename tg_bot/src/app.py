@@ -33,6 +33,11 @@ async def main():
     dp.include_router(admins.unblock_user_router)
 
     dp.include_router(admins.computer_management_router)
+    dp.include_router(admins.add_computer_router)
+    dp.include_router(admins.computer_list_router)
+    dp.include_router(admins.computer_list_by_category_router)
+    dp.include_router(admins.delete_computer_router)
+
     dp.include_router(admins.booking_management_router)
     dp.include_router(admins.payment_management_router)
 

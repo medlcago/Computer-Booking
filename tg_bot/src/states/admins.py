@@ -15,3 +15,15 @@ class UserInfo(StatesGroup):
 
 class UserBookingsInfo(StatesGroup):
     user_id = State()
+
+
+class AddComputer(StatesGroup):
+    computer_data = State()
+
+
+class ComputerCategory(StatesGroup):
+    category = State()
+
+
+class DeleteComputer(StatesGroup):
+    computer_id = State()
