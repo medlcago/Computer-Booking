@@ -3,7 +3,8 @@ from datetime import timezone
 
 from aiogram import Router, F
 from aiogram.fsm.context import FSMContext
-from aiogram.types import CallbackQuery, BufferedInputFile
+from aiogram.types import BufferedInputFile
+from aiogram.types import CallbackQuery
 from aiogram.types import Message
 
 from filters import IsAdmin
@@ -14,15 +15,21 @@ from utils.misc import create_bytes_excel_file
 router = Router()
 
 
-@router.callback_query(F.data == "info_about_user_bookings", IsAdmin())
-async def info_about_user_booking(call: CallbackQuery, state: FSMContext):
-    await call.answer(cache_time=60)
+@router.callback_query(F.data == "user_booking_history", IsAdmin())
+async def user_booking_history(call: CallbackQuery, state: FSMContext):
+    """
+    Информация о всех бронированиях пользователя (1)
+    """
+    await call.answer(cache_time=15)
     await call.message.answer("Вы хотите получить информацию о бронированиях пользователя.\nПожалуйста, введите его ID")
     await state.set_state(UserBookingsInfo.user_id)
 
 
 @router.message(UserBookingsInfo.user_id)
-async def info_about_user_booking(message: Message, state: FSMContext, booking_api: BookingAPI):
+async def user_booking_history(message: Message, state: FSMContext, booking_api: BookingAPI):
+    """
+    Информация о всех бронированиях пользователя (2)
+    """
     await state.clear()
     try:
         user_id = int(message.text)

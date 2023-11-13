@@ -13,6 +13,9 @@ router = Router()
 
 @router.callback_query(F.data == "info_about_user", IsAdmin())
 async def info_about_user(call: CallbackQuery, state: FSMContext):
+    """
+    Информация о пользователе (1)
+    """
     await call.answer(cache_time=60)
     await call.message.answer("Вы хотите получить информацию о пользователе.\nПожалуйста, введите его ID")
     await state.set_state(UserInfo.user_id)
@@ -20,6 +23,9 @@ async def info_about_user(call: CallbackQuery, state: FSMContext):
 
 @router.message(UserInfo.user_id)
 async def info_about_user(message: Message, state: FSMContext, user_api: UserAPI):
+    """
+    Информация о пользователе (2)
+    """
     await state.clear()
     try:
         user_id = int(message.text)

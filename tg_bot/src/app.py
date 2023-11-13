@@ -26,9 +26,15 @@ async def main():
 
     dp.include_router(admins.command_admin_router)
     dp.include_router(admins.user_management_router)
-    dp.include_router(admins.user_list_router)
     dp.include_router(admins.info_about_user_router)
     dp.include_router(admins.info_about_user_bookings_router)
+    dp.include_router(admins.user_list_router)
+    dp.include_router(admins.block_user_router)
+    dp.include_router(admins.unblock_user_router)
+
+    dp.include_router(admins.computer_management_router)
+    dp.include_router(admins.booking_management_router)
+    dp.include_router(admins.payment_management_router)
 
     dp.include_router(users.command_start_router)
     dp.include_router(users.show_main_menu_router)
@@ -41,7 +47,7 @@ async def main():
 
     dp.include_router(errors.error_handler_router)
 
-    dp.include_router(unknown_action_router)
+    dp.include_router(unknown_action_router)  # Обрабатывает любое неизвестное действие!
 
     dp.message.middleware(UserRegistrationMiddleware())
 

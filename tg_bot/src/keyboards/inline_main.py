@@ -79,7 +79,73 @@ def user_management_menu() -> InlineKeyboardMarkup:
             InlineKeyboardButton(text="Информация о пользователе", callback_data="info_about_user")
         ],
         [
-            InlineKeyboardButton(text="Все бронирования пользователя [Excel]", callback_data="info_about_user_bookings")
+            InlineKeyboardButton(text="Все бронирования пользователя [Excel]", callback_data="user_booking_history")
+        ],
+        [
+            InlineKeyboardButton(text="🔙 Вернуться в админ панель", callback_data="show_admin_menu")
+        ],
+        [
+            InlineKeyboardButton(text="❌ Закрыть", callback_data="close")
+        ]
+    ])
+
+    return keyboard
+
+
+def computer_management_menu() -> InlineKeyboardMarkup:
+    keyboard = InlineKeyboardMarkup(inline_keyboard=[
+        [
+            InlineKeyboardButton(text="Добавить компьютер", callback_data="add_computer")
+        ],
+        [
+            InlineKeyboardButton(text="Все компьютеры [Excel]", callback_data="computer_list"),
+        ],
+        [
+            InlineKeyboardButton(
+                text="Компьютеры конкретной категории [Excel]",
+                callback_data="computer_list_by_category"
+            )
+        ],
+        [
+            InlineKeyboardButton(text="Удалить компьютер", callback_data="delete_computer")
+        ],
+        [
+            InlineKeyboardButton(text="🔙 Вернуться в админ панель", callback_data="show_admin_menu")
+        ],
+        [
+            InlineKeyboardButton(text="❌ Закрыть", callback_data="close")
+        ]
+    ])
+
+    return keyboard
+
+
+def booking_management_menu() -> InlineKeyboardMarkup:
+    keyboard = InlineKeyboardMarkup(inline_keyboard=[
+        [
+            InlineKeyboardButton(text="Все бронирования [Excel]", callback_data="booking_list")
+        ],
+        [
+            InlineKeyboardButton(
+                text="Все бронирования пользователя [Excel]",
+                callback_data="user_booking_history"
+            )
+        ],
+        [
+            InlineKeyboardButton(text="🔙 Вернуться в админ панель", callback_data="show_admin_menu")
+        ],
+        [
+            InlineKeyboardButton(text="❌ Закрыть", callback_data="close")
+        ]
+    ])
+
+    return keyboard
+
+
+def payment_management_menu() -> InlineKeyboardMarkup:
+    keyboard = InlineKeyboardMarkup(inline_keyboard=[
+        [
+            InlineKeyboardButton(text="История платежей пользователя", callback_data="user_payment_history")
         ],
         [
             InlineKeyboardButton(text="🔙 Вернуться в админ панель", callback_data="show_admin_menu")

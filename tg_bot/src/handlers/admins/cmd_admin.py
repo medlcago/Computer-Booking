@@ -19,7 +19,7 @@ async def command_admin(message: Message):
 
 @router.callback_query(F.data == "show_admin_menu")
 async def show_admin_menu(call: CallbackQuery):
-    await call.answer(cache_time=30)
+    await call.answer()
     await call.message.edit_text(
         text="Панель администратора\nПожалуйста, выберите нужно действие.",
         reply_markup=admin_menu()

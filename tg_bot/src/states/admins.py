@@ -5,6 +5,10 @@ class BlockUser(StatesGroup):
     user_id = State()
 
 
+class UnBlockUser(StatesGroup):
+    user_id = State()
+
+
 class UserInfo(StatesGroup):
     user_id = State()
 

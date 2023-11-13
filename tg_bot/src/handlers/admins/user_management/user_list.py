@@ -1,8 +1,8 @@
-from datetime import datetime, timezone
+from datetime import datetime
+from datetime import timezone
 
 from aiogram import Router, F
-from aiogram.types import BufferedInputFile
-from aiogram.types import CallbackQuery
+from aiogram.types import CallbackQuery, BufferedInputFile
 
 from filters import IsAdmin
 from utils.api_methods import UserAPI
@@ -13,6 +13,9 @@ router = Router()
 
 @router.callback_query(F.data == "user_list", IsAdmin())
 async def user_list(call: CallbackQuery, user_api: UserAPI):
+    """
+    Список всех пользователей бота в формате Excel
+    """
     await call.answer(cache_time=60)
     users: list[dict] = await user_api.get_all_users()
     if users:
