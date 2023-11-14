@@ -13,7 +13,7 @@ class UserAPI:
 
     async def create_user(self, **data):
         async with aiohttp.ClientSession() as session:
-            async with session.post(url=self.url + "/", json=data, headers=self.headers) as response:
+            async with session.post(url=f"{self.url}/", json=data, headers=self.headers) as response:
                 if response.status == 201:
                     return await response.json()
 
@@ -38,7 +38,7 @@ class UserAPI:
             params["is_active"] = is_active
 
         async with aiohttp.ClientSession() as session:
-            async with session.get(url=self.url + "/", params=params, headers=self.headers) as response:
+            async with session.get(url=f"{self.url}/", params=params, headers=self.headers) as response:
                 if response.status == 200:
                     return await response.json()
 

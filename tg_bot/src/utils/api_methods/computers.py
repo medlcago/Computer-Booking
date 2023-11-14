@@ -13,7 +13,7 @@ class ComputerAPI:
 
     async def add_new_computer(self, **data):
         async with aiohttp.ClientSession() as session:
-            async with session.post(url=self.url + "/", json=data, headers=self.headers) as response:
+            async with session.post(url=f"{self.url}/", json=data, headers=self.headers) as response:
                 if response.status == 201:
                     return await response.json()
 
@@ -39,7 +39,7 @@ class ComputerAPI:
             params["is_reserved"] = int(bool(is_reserved))
 
         async with aiohttp.ClientSession() as session:
-            async with session.get(url=self.url + "/", params=params, headers=self.headers) as response:
+            async with session.get(url=f"{self.url}/", params=params, headers=self.headers) as response:
                 if response.status == 200:
                     return await response.json()
 

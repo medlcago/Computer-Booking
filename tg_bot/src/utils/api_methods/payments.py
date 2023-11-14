@@ -13,7 +13,7 @@ class PaymentAPI:
 
     async def create_payment(self, **data):
         async with aiohttp.ClientSession() as session:
-            async with session.post(url=self.url + "/", json=data, headers=self.headers) as response:
+            async with session.post(url=f"{self.url}/", json=data, headers=self.headers) as response:
                 if response.status == 201:
                     return await response.json()
 

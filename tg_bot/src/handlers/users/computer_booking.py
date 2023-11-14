@@ -32,7 +32,7 @@ async def computer_booking(call: CallbackQuery,
     if (current_balance := user.get("balance")) - total_cost >= 0:
         if not computer.get("is_reserved"):
             start_time = datetime.now(timezone.utc)
-            end_time = datetime.now(timezone.utc) + timedelta(hours=1)
+            end_time = start_time + timedelta(hours=1)
 
             if booking := (await booking_api.create_computer_booking(
                     user_id=user_id,
@@ -54,9 +54,9 @@ async def computer_booking(call: CallbackQuery,
             else:
                 await call.message.edit_text("Произошла ошибка при бронировании компьютера.")
         else:
-            await call.message.answer(
+            await call.message.edit_text(
                 text="На данный момент компьютер недоступен.",
-                reply_markup=create_inline_keyboard(width=1, show_menu="Вернуться в меню")
+                reply_markup=create_inline_keyboard(width=1, computer_available_list="Назад")
             )
     else:
         await call.message.edit_text(
