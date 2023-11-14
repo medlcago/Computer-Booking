@@ -15,12 +15,11 @@ from middlewares import UserRegistrationMiddleware
 from utils.api_methods import UserAPI, ComputerAPI, BookingAPI, PaymentAPI
 
 
-async def main():
-    bot = Bot(token=config.tg.token, parse_mode="html")
-    storage = RedisStorage.from_url(config.redis.url)
+def middlewares_registration(dp: Dispatcher):
+    dp.message.middleware(UserRegistrationMiddleware())
 
-    dp = Dispatcher(storage=storage)
 
+def routers_registration(dp: Dispatcher):
     dp.include_router(cancel_handler_router)
     dp.include_router(close_handler_router)
 
@@ -54,7 +53,14 @@ async def main():
 
     dp.include_router(unknown_action_router)  # Обрабатывает любое неизвестное действие!
 
-    dp.message.middleware(UserRegistrationMiddleware())
+
+async def main():
+    bot = Bot(token=config.tg.token, parse_mode="html")
+    storage = RedisStorage.from_url(config.redis.url)
+
+    dp = Dispatcher(storage=storage)
+    routers_registration(dp=dp)
+    middlewares_registration(dp=dp)
 
     logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s: %(message)s',
                         datefmt='%d.%m.%Y %H:%M:%S')

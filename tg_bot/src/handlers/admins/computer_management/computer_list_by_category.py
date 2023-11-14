@@ -14,7 +14,7 @@ from utils.misc import create_bytes_excel_file
 router = Router()
 
 
-@router.callback_query(F.data == "computer_list_by_category")
+@router.callback_query(F.data == "computer_list_by_category_excel")
 async def computer_list_by_category(call: CallbackQuery, state: FSMContext):
     """
     Список компьютеров конкретной категории в формате Excel (1)

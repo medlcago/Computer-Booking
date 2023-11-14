@@ -10,7 +10,7 @@ from utils.misc import create_bytes_excel_file
 router = Router()
 
 
-@router.callback_query(F.data == "computer_list")
+@router.callback_query(F.data == "computer_list_excel")
 async def computer_list(call: CallbackQuery, computer_api: ComputerAPI):
     """
     Список всех компьютеров в формате Excel

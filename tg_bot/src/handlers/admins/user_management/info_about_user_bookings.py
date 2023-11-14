@@ -15,7 +15,7 @@ from utils.misc import create_bytes_excel_file
 router = Router()
 
 
-@router.callback_query(F.data == "user_booking_history", IsAdmin())
+@router.callback_query(F.data == "user_booking_history_excel", IsAdmin())
 async def user_booking_history(call: CallbackQuery, state: FSMContext):
     """
     Информация о всех бронированиях пользователя (1)

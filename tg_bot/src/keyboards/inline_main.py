@@ -75,11 +75,11 @@ def user_management_menu() -> InlineKeyboardMarkup:
             InlineKeyboardButton(text="Разблокировать", callback_data="unblock_user")
         ],
         [
-            InlineKeyboardButton(text="Все пользователи [Excel]", callback_data="user_list"),
+            InlineKeyboardButton(text="Все пользователи [Excel]", callback_data="user_list_excel"),
             InlineKeyboardButton(text="Информация о пользователе", callback_data="info_about_user")
         ],
         [
-            InlineKeyboardButton(text="Все бронирования пользователя [Excel]", callback_data="user_booking_history")
+            InlineKeyboardButton(text="Все бронирования пользователя [Excel]", callback_data="user_booking_history_excel")
         ],
         [
             InlineKeyboardButton(text="🔙 Вернуться в админ панель", callback_data="show_admin_menu")
@@ -98,12 +98,12 @@ def computer_management_menu() -> InlineKeyboardMarkup:
             InlineKeyboardButton(text="Добавить компьютер", callback_data="add_computer")
         ],
         [
-            InlineKeyboardButton(text="Все компьютеры [Excel]", callback_data="computer_list"),
+            InlineKeyboardButton(text="Все компьютеры [Excel]", callback_data="computer_list_excel"),
         ],
         [
             InlineKeyboardButton(
                 text="Компьютеры конкретной категории [Excel]",
-                callback_data="computer_list_by_category"
+                callback_data="computer_list_by_category_excel"
             )
         ],
         [
@@ -123,12 +123,12 @@ def computer_management_menu() -> InlineKeyboardMarkup:
 def booking_management_menu() -> InlineKeyboardMarkup:
     keyboard = InlineKeyboardMarkup(inline_keyboard=[
         [
-            InlineKeyboardButton(text="Все бронирования [Excel]", callback_data="booking_list")
+            InlineKeyboardButton(text="Все бронирования [Excel]", callback_data="booking_list_excel")
         ],
         [
             InlineKeyboardButton(
                 text="Все бронирования пользователя [Excel]",
-                callback_data="user_booking_history"
+                callback_data="user_booking_history_excel"
             )
         ],
         [
@@ -145,7 +145,7 @@ def booking_management_menu() -> InlineKeyboardMarkup:
 def payment_management_menu() -> InlineKeyboardMarkup:
     keyboard = InlineKeyboardMarkup(inline_keyboard=[
         [
-            InlineKeyboardButton(text="История платежей пользователя", callback_data="user_payment_history")
+            InlineKeyboardButton(text="История платежей пользователя", callback_data="user_payment_history_excel")
         ],
         [
             InlineKeyboardButton(text="🔙 Вернуться в админ панель", callback_data="show_admin_menu")

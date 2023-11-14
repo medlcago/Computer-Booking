@@ -11,7 +11,7 @@ from utils.misc import create_bytes_excel_file
 router = Router()
 
 
-@router.callback_query(F.data == "user_list", IsAdmin())
+@router.callback_query(F.data == "user_list_excel", IsAdmin())
 async def user_list(call: CallbackQuery, user_api: UserAPI):
     """
     Список всех пользователей бота в формате Excel
