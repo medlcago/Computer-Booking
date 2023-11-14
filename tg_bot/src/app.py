@@ -2,6 +2,7 @@ import asyncio
 import logging
 
 from aiogram import Bot, Dispatcher
+from aiogram.fsm.storage.redis import Redis
 from aiogram.fsm.storage.redis import RedisStorage
 
 from config import config
@@ -44,6 +45,7 @@ def routers_registration(dp: Dispatcher):
     dp.include_router(admins.user_payment_history_router)
 
     dp.include_router(users.command_start_router)
+    dp.include_router(users.command_bonus_router)
     dp.include_router(users.show_main_menu_router)
     dp.include_router(users.show_my_profile_router)
     dp.include_router(users.top_up_balance_router)
@@ -60,6 +62,7 @@ def routers_registration(dp: Dispatcher):
 async def main():
     bot = Bot(token=config.tg.token, parse_mode="html")
     storage = RedisStorage.from_url(config.redis.url)
+    redis = Redis.from_url(url=config.redis.url)
 
     dp = Dispatcher(storage=storage)
     routers_registration(dp=dp)
@@ -76,7 +79,8 @@ async def main():
                                computer_api=ComputerAPI(base_url=config.api.base_url, api_key=config.api.api_key),
                                booking_api=BookingAPI(base_url=config.api.base_url, api_key=config.api.api_key),
                                payment_api=PaymentAPI(base_url=config.api.base_url, api_key=config.api.api_key),
-                               config=config
+                               config=config,
+                               redis=redis
                                )
     except Exception as ex:
         logging.error(f"[!!! Exception] - {ex}", exc_info=True)

@@ -1,3 +1,4 @@
+from .cmd_bonus import router as command_bonus_router
 from .cmd_start import router as command_start_router
 from .computer_available_list import router as computer_available_list_router
 from .computer_booking import router as computer_booking_router
