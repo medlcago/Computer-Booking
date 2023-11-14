@@ -2,6 +2,9 @@ from datetime import datetime
 
 from pydantic import BaseModel, Field
 
+from routers.booking.schemas import BookingResponse
+from routers.payments.schemas import PaymentResponse
+
 
 class BaseUser(BaseModel):
     user_id: int
@@ -21,6 +24,11 @@ class UserResponse(BaseUser):
     is_blocked: bool | None = Field(default=None)
     is_active: bool | None = Field(default=None)
     balance: int | None = Field(default=None)
+
+
+class FullUserResponse(UserResponse):
+    bookings: list["BookingResponse"]
+    payments: list["PaymentResponse"]
 
 
 class CreateUser(BaseUser):

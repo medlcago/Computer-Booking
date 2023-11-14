@@ -60,3 +60,9 @@ class UserAPI:
             async with session.delete(url=f"{self.url}/id{user_id}", headers=self.headers) as response:
                 if response.status == 200:
                     return await response.json()
+
+    async def get_user_by_id_with_full_information(self, user_id: int):
+        async with aiohttp.ClientSession() as session:
+            async with session.get(url=f"{self.url}/id{user_id}/full", headers=self.headers) as response:
+                if response.status == 200:
+                    return await response.json()

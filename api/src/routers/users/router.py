@@ -10,7 +10,8 @@ from routers.users.schemas import (
     ChangedUserPassword,
     UserResponse,
     UpdateUserDetails,
-    UpdatedUserDetails
+    UpdatedUserDetails,
+    FullUserResponse
 )
 from services.auth import auth_guard_key
 from . import crud
@@ -48,7 +49,7 @@ async def get_all_users(
 
 
 @router.get("/id{user_id}", response_model=UserResponse,
-            summary="Получение информации о пользователи по его идентификатору")
+            summary="Получение базовой информации о пользователи по его идентификатору")
 async def get_user_by_id(user_id: int, db: AsyncSession = Depends(get_db)):
     return await crud.get_user_by_id(db=db, user_id=user_id)
 
@@ -61,3 +62,9 @@ async def change_user_password(user_id: int, data: ChangeUserPassword, db: Async
 @router.delete("/id{user_id}", summary="Удалить пользователя по его идентификатору")
 async def delete_user(user_id: int, db: AsyncSession = Depends(get_db)):
     return await crud.delete_user(db=db, user_id=user_id)
+
+
+@router.get("/id/{user_id}/full", response_model=FullUserResponse,
+            summary="Получение полной информации о пользователи по его идентификатору")
+async def get_user_by_id_with_full_information(user_id: int, db: AsyncSession = Depends(get_db)):
+    return await crud.get_user_by_id_with_full_information(db=db, user_id=user_id)

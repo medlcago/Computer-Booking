@@ -1,6 +1,7 @@
 from typing import Sequence
 
 from fastapi import HTTPException
+from sqlalchemy.orm import selectinload
 from sqlalchemy import select, update
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -92,3 +93,10 @@ async def delete_user(db: AsyncSession, user_id: int) -> dict:
     return {
         "status": f"User with ID {user_id} was successfully deleted."
     }
+
+
+async def get_user_by_id_with_full_information(db: AsyncSession, user_id) -> User:
+    user = await db.scalar(select(User).filter_by(user_id=user_id).options(selectinload(User.bookings)).options(selectinload(User.payments)))
+    if user is None:
+        raise HTTPException(status_code=404, detail=f"User with ID {user_id} not found.")
+    return user
