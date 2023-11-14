@@ -13,6 +13,10 @@ def generate_order_message(order: dict, page: int, total_pages: int) -> tuple[st
 
     keyboard = create_pagination_keyboard_builder(page, total_pages, page_type="orders").copy()
     keyboard.row(InlineKeyboardButton(
+        text="📃 Скачать Excel файл",
+        callback_data="my_orders_excel"
+    ))
+    keyboard.row(InlineKeyboardButton(
         text="Вернуться в меню",
         callback_data="show_menu")
     )
