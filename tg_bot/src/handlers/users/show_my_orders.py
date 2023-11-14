@@ -70,6 +70,10 @@ async def show_my_orders_excel(call: CallbackQuery, booking_api: BookingAPI):
         file_bytes_xlsx = create_bytes_excel_file(data=orders, headers=headers)
         file_name = datetime.now(timezone.utc).strftime("%Y-%m-%d_%H-%M-%S") + f"_{user_id}_orders.xlsx"
         file = BufferedInputFile(file_bytes_xlsx, filename=file_name)
-        await call.message.answer_document(file, caption="Список заказов")
+        await call.message.answer_document(
+            document=file,
+            caption="Список заказов",
+            reply_markup=create_inline_keyboard(width=1, close="❌ Закрыть")
+        )
     else:
         await call.message.answer("Не удалось получить информацию о заказах")

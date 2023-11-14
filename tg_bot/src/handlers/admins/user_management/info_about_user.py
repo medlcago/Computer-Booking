@@ -4,6 +4,7 @@ from aiogram.types import CallbackQuery
 from aiogram.types import Message
 
 from filters import IsAdmin
+from keyboards.inline_utils import create_inline_keyboard
 from states.admins import UserInfo
 from utils.api_methods import UserAPI
 from utils.misc import generate_info_about_user_message
@@ -36,6 +37,9 @@ async def info_about_user(message: Message, state: FSMContext, user_api: UserAPI
     user = await user_api.get_user_by_id(user_id=user_id)
     if user:
         message_text = generate_info_about_user_message(user=user)
-        await message.reply(text=message_text)
+        await message.reply(
+            text=message_text,
+            reply_markup=create_inline_keyboard(width=1, close="❌ Закрыть")
+        )
     else:
         await message.reply(text=f"Не удалось получить информацию по ID <code>{user_id}</code>")

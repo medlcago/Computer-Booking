@@ -26,7 +26,7 @@ def routers_registration(dp: Dispatcher):
     dp.include_router(admins.command_admin_router)
     dp.include_router(admins.user_management_router)
     dp.include_router(admins.info_about_user_router)
-    dp.include_router(admins.info_about_user_bookings_router)
+    dp.include_router(admins.user_booking_history_router)
     dp.include_router(admins.user_list_router)
     dp.include_router(admins.block_user_router)
     dp.include_router(admins.unblock_user_router)
@@ -38,7 +38,10 @@ def routers_registration(dp: Dispatcher):
     dp.include_router(admins.delete_computer_router)
 
     dp.include_router(admins.booking_management_router)
+    dp.include_router(admins.bookings_list_router)
+
     dp.include_router(admins.payment_management_router)
+    dp.include_router(admins.user_payment_history_router)
 
     dp.include_router(users.command_start_router)
     dp.include_router(users.show_main_menu_router)
