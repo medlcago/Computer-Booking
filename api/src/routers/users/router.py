@@ -49,7 +49,7 @@ async def get_all_users(
 
 
 @router.get("/id{user_id}", response_model=UserResponse,
-            summary="Получение базовой информации о пользователи по его идентификатору")
+            summary="Получение базовой информации о пользователе по его идентификатору")
 async def get_user_by_id(user_id: int, db: AsyncSession = Depends(get_db)):
     return await crud.get_user_by_id(db=db, user_id=user_id)
 
@@ -65,6 +65,6 @@ async def delete_user(user_id: int, db: AsyncSession = Depends(get_db)):
 
 
 @router.get("/id/{user_id}/full", response_model=FullUserResponse,
-            summary="Получение полной информации о пользователи по его идентификатору")
+            summary="Получение полной информации о пользователе по его идентификатору")
 async def get_user_by_id_with_full_information(user_id: int, db: AsyncSession = Depends(get_db)):
     return await crud.get_user_by_id_with_full_information(db=db, user_id=user_id)

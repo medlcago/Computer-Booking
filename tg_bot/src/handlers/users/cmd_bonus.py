@@ -1,6 +1,7 @@
 import datetime
 
 from aiogram import Router
+from aiogram import flags
 from aiogram.filters.command import Command
 from aiogram.fsm.storage.redis import Redis
 from aiogram.types import Message
@@ -13,6 +14,7 @@ router = Router()
 
 
 @router.message(Command(commands="bonus"), IsPremium())
+@flags.rate_limit(rate=300, limit=5)
 async def command_bonus(message: Message, redis: Redis, user_api: UserAPI):
     user_id = message.from_user.id
     bonus = 10

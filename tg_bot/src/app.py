@@ -13,11 +13,15 @@ from handlers import errors
 from handlers import unknown_action_router
 from handlers import users
 from middlewares import UserRegistrationMiddleware
+from middlewares import RateLimitMiddleware
 from utils.api_methods import UserAPI, ComputerAPI, BookingAPI, PaymentAPI
 
 
 def middlewares_registration(dp: Dispatcher):
     dp.message.middleware(UserRegistrationMiddleware())
+
+    dp.message.middleware(RateLimitMiddleware())
+    dp.callback_query.middleware(RateLimitMiddleware())
 
 
 def routers_registration(dp: Dispatcher):
