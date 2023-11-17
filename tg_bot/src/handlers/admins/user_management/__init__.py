@@ -1,4 +1,5 @@
 from .block_user import router as block_user_router
+from .change_balance import router as change_balance_router
 from .info_about_user import router as info_about_user_router
 from .unblock_user import router as unblock_user_router
 from .user_booking_history import router as user_booking_history_router

@@ -13,6 +13,7 @@ from .payment_management import payment_management_router
 from .payment_management import user_payment_history_router
 
 from .user_management import block_user_router
+from .user_management import change_balance_router
 from .user_management import info_about_user_router
 from .user_management import unblock_user_router
 from .user_management import user_booking_history_router

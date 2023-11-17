@@ -31,3 +31,7 @@ class ComputerCategory(StatesGroup):
 
 class DeleteComputer(StatesGroup):
     computer_id = State()
+
+
+class ChangeBalance(StatesGroup):
+    user_id = State()

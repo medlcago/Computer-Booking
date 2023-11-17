@@ -12,8 +12,8 @@ from handlers import close_handler_router
 from handlers import errors
 from handlers import unknown_action_router
 from handlers import users
-from middlewares import UserRegistrationMiddleware
 from middlewares import RateLimitMiddleware
+from middlewares import UserRegistrationMiddleware
 from utils.api_methods import UserAPI, ComputerAPI, BookingAPI, PaymentAPI
 
 
@@ -35,6 +35,7 @@ def routers_registration(dp: Dispatcher):
     dp.include_router(admins.user_list_router)
     dp.include_router(admins.block_user_router)
     dp.include_router(admins.unblock_user_router)
+    dp.include_router(admins.change_balance_router)
 
     dp.include_router(admins.computer_management_router)
     dp.include_router(admins.add_computer_router)
