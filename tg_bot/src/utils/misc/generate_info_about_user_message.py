@@ -8,6 +8,6 @@ def generate_info_about_user_message(user: dict):
 <b>Админ:</b> {('Нет', 'Да')[user.get('is_admin')]}
 <b>Заблокирован:</b> {('Нет', 'Да')[user.get('is_blocked')]}
 <b>Активен:</b> {('Нет', 'Да')[user.get('is_active')]}
-<b>Баланс:</b> {user.get('balance')}
+<b>Баланс:</b> {user.get('balance')} RUB
 """
     return user_info

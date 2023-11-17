@@ -36,6 +36,7 @@ def top_up_amount() -> InlineKeyboardMarkup:
             InlineKeyboardButton(text="💵 300 рублей", callback_data=TopUpBalance(amount=300).pack())
         ],
         [
+            InlineKeyboardButton(text="💵 750 рублей", callback_data=TopUpBalance(amount=750).pack()),
             InlineKeyboardButton(text="💵 1000 рублей", callback_data=TopUpBalance(amount=1000).pack()),
         ],
         [
@@ -81,6 +82,9 @@ def user_management_menu() -> InlineKeyboardMarkup:
         [
             InlineKeyboardButton(text="Все бронирования пользователя [Excel]",
                                  callback_data="user_booking_history_excel")
+        ],
+        [
+            InlineKeyboardButton(text="Начислить баланс", callback_data="change_balance")
         ],
         [
             InlineKeyboardButton(text="🔙 Вернуться в админ панель", callback_data="show_admin_menu")

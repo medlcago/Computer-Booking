@@ -24,8 +24,11 @@ async def create_user(db: AsyncSession, data: dict) -> User:
 
 async def update_user_details(db: AsyncSession, user_id: int, data: dict) -> User:
     if data:
-        stmt = update(User).filter_by(user_id=user_id).values(**data)
-        result = await db.execute(stmt)
+        try:
+            stmt = update(User).filter_by(user_id=user_id).values(**data)
+            result = await db.execute(stmt)
+        except IntegrityError:
+            raise HTTPException(status_code=409, detail="Data integrity error")
 
         if result.rowcount == 0:
             raise HTTPException(status_code=404, detail=f"User with ID {user_id} not found.")

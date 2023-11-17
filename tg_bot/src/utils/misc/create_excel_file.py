@@ -1,4 +1,5 @@
 import io
+from itertools import zip_longest
 
 import openpyxl
 from openpyxl.styles import Font
@@ -15,9 +16,10 @@ def create_bytes_excel_file(data: list, headers: list) -> bytes:
         cell.value = header
         cell.font = bold_font
 
-    # Add data rows
+    max_columns = max(len(headers), max(len(row_data) for row_data in data))
+
     for row_num, row_data in enumerate(data, 2):
-        for col_num, cell_data in enumerate(row_data.values(), 1):
+        for col_num, cell_data in zip_longest(range(1, max_columns + 1), row_data.values(), fillvalue="N/A"):
             sheet.cell(row=row_num, column=col_num).value = cell_data
 
     with io.BytesIO() as file_stream:
