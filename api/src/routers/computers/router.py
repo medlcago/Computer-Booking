@@ -3,10 +3,10 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, Body, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from api.enums import ComputerCategories
 from database import get_db
 from routers.computers.schemas import (
     BaseComputer,
-    Categories,
     UpdateComputerComponent,
     ComputerResponse,
     UpdatedComputerComponent)
@@ -40,7 +40,7 @@ async def get_computer_by_id(computer_id: int, db: AsyncSession = Depends(get_db
 
 @router.get("/{category}", response_model=list[ComputerResponse],
             summary="Получение информации о компьютерах конкретной категории")
-async def get_computers_by_category(category: Categories, db: AsyncSession = Depends(get_db)):
+async def get_computers_by_category(category: ComputerCategories, db: AsyncSession = Depends(get_db)):
     return await crud.get_computers_by_category(db=db, category=category)
 
 

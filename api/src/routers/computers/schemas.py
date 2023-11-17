@@ -1,11 +1,6 @@
-from enum import Enum
-
 from pydantic import BaseModel, Field
 
-
-class Categories(str, Enum):
-    vip = "VIP"
-    regular = "Regular"
+from api.enums import ComputerCategories
 
 
 class BaseComputer(BaseModel):
@@ -16,7 +11,7 @@ class BaseComputer(BaseModel):
     storage: int
     gpu: str
     description: str | None = Field(default=None, max_length=255)
-    category: Categories
+    category: ComputerCategories
     price_per_hour: int
 
     class Config:
@@ -36,7 +31,7 @@ class UpdateComputerComponent(BaseModel):
     storage: int | None = Field(default=None)
     gpu: str | None = Field(default=None)
     description: str | None = Field(default=None, max_length=256)
-    category: Categories | None = Field(default=None)
+    category: ComputerCategories | None = Field(default=None)
 
 
 class UpdatedComputerComponent(UpdateComputerComponent):

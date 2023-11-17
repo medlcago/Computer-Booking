@@ -9,6 +9,7 @@ from .base import Base
 if TYPE_CHECKING:
     from .booking import Booking
     from .payment import Payment
+    from .ticket import Ticket
 
 
 class User(Base):
@@ -42,6 +43,8 @@ class User(Base):
         back_populates="user",
         cascade="all, delete-orphan"
     )
+
+    tickets: Mapped[list["Ticket"]] = relationship(back_populates="user")
 
     def __str__(self):
         return f"{self.__class__.__name__}(id={self.id}, user_id={self.user_id!r}, username={self.username!r}, phone_number={self.phone_number!r}, balance={self.balance!r})"

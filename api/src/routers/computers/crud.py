@@ -5,8 +5,8 @@ from sqlalchemy import select, update
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from api.enums import ComputerCategories
 from api.models import Computer
-from routers.computers.schemas import Categories
 from routers.computers.utils import update_reserved_status
 
 
@@ -32,7 +32,7 @@ async def get_computer_by_id(db: AsyncSession, computer_id: int) -> Computer:
     return computer
 
 
-async def get_computers_by_category(db: AsyncSession, category: Categories, is_reserved: bool | None = None) -> Sequence[Computer]:
+async def get_computers_by_category(db: AsyncSession, category: ComputerCategories, is_reserved: bool | None = None) -> Sequence[Computer]:
     await update_reserved_status(db=db, category=category)
 
     stmt = select(Computer).filter_by(category=category).order_by(Computer.computer_id)
