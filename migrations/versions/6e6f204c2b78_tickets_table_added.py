@@ -23,7 +23,7 @@ def upgrade() -> None:
     op.create_table('tickets',
     sa.Column('id', sa.BIGINT(), nullable=False),
     sa.Column('title', sa.String(length=255), nullable=False),
-    sa.Column('status', sa.Enum('open', 'closed', name='statuses'), server_default='open', nullable=False),
+    sa.Column('status', sa.Enum('open', 'closed', name='ticketstatus'), server_default='open', nullable=False),
     sa.Column('created_at', sa.TIMESTAMP(timezone=True), server_default=sa.text("TIMEZONE('utc', now())"), nullable=False),
     sa.Column('updated_at', sa.TIMESTAMP(timezone=True), server_default=sa.text("TIMEZONE('utc', now())"), nullable=False),
     sa.Column('assigned_to', sa.BIGINT(), nullable=False),
