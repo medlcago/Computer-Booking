@@ -13,3 +13,8 @@ class ComputerBooking(CallbackData, prefix="booking"):
 
 class TopUpBalance(CallbackData, prefix="top_up_balance"):
     amount: int
+
+
+class Ticket(CallbackData, prefix="ticket"):
+    ticket_id: int
+    assigned_to: int

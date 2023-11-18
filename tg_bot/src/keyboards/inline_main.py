@@ -23,6 +23,9 @@ def main_menu() -> InlineKeyboardMarkup:
         ],
         [
             InlineKeyboardButton(text="💲 Пополнить баланс", callback_data="top_up_balance")
+        ],
+        [
+            InlineKeyboardButton(text="📝 Создать тикет", callback_data="ticket")
         ]
     ])
 
@@ -60,6 +63,9 @@ def admin_menu() -> InlineKeyboardMarkup:
         ],
         [
             InlineKeyboardButton(text="Управление платежами", callback_data="payment_management")
+        ],
+        [
+            InlineKeyboardButton(text="Управление тикетами", callback_data="ticket_management")
         ],
         [
             InlineKeyboardButton(text="❌ Закрыть", callback_data="close")
@@ -159,4 +165,21 @@ def payment_management_menu() -> InlineKeyboardMarkup:
         ]
     ])
 
+    return keyboard
+
+
+def ticket_management_menu() -> InlineKeyboardMarkup:
+    keyboard = InlineKeyboardMarkup(inline_keyboard=[
+        [
+            InlineKeyboardButton(text="Открытые тикеты", callback_data="open_tickets"),
+            InlineKeyboardButton(text="Получить тикет по ID", callback_data="get_ticket_by_id")
+        ],
+        [
+            InlineKeyboardButton(text="🔙 Вернуться в админ панель", callback_data="show_admin_menu")
+        ],
+        [
+            InlineKeyboardButton(text="❌ Закрыть", callback_data="close")
+        ]
+    ]
+    )
     return keyboard

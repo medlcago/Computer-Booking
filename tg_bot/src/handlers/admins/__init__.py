@@ -12,6 +12,11 @@ from .computer_management import delete_computer_router
 from .payment_management import payment_management_router
 from .payment_management import user_payment_history_router
 
+from .ticket_management import close_ticket_router
+from .ticket_management import get_ticket_by_id_router
+from .ticket_management import open_tickets_router
+from .ticket_management import ticket_management_router
+
 from .user_management import block_user_router
 from .user_management import change_balance_router
 from .user_management import info_about_user_router

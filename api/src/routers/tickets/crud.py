@@ -45,3 +45,10 @@ async def get_tickets_by_user_id(db: AsyncSession, user_id: int, status: TicketS
     result = await db.execute(stmt)
     tickets = result.scalars().all()
     return tickets
+
+
+async def get_ticket_by_id(db: AsyncSession, ticket_id: int) -> Ticket:
+    ticket = await db.scalar(select(Ticket).filter_by(id=ticket_id))
+    if ticket is None:
+        raise HTTPException(status_code=404, detail=f"Ticket with ID {ticket_id} not found.")
+    return ticket

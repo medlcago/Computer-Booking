@@ -28,3 +28,8 @@ async def get_all_tickets(ticket_status: TicketStatus | None = None, db: AsyncSe
 @router.get("/user/id{user_id}", response_model=list[TicketResponse], summary="Получить тикеты пользователя")
 async def get_user_tickets_by_user_id(user_id: int, ticket_status: TicketStatus | None = None, db: AsyncSession = Depends(get_db)):
     return await crud.get_tickets_by_user_id(db=db, user_id=user_id, status=ticket_status)
+
+
+@router.get("/id{ticket_id}", response_model=TicketResponse, summary="Получить тикет по его ID")
+async def get_ticket_by_id(ticket_id: int, db: AsyncSession = Depends(get_db)):
+    return await crud.get_ticket_by_id(db=db, ticket_id=ticket_id)

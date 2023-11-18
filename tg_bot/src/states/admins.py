@@ -35,3 +35,11 @@ class DeleteComputer(StatesGroup):
 
 class ChangeBalance(StatesGroup):
     user_id = State()
+
+
+class CloseTicket(StatesGroup):
+    text = State()
+
+
+class TicketInfo(StatesGroup):
+    ticket_id = State()

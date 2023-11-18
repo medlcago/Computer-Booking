@@ -14,7 +14,7 @@ from handlers import unknown_action_router
 from handlers import users
 from middlewares import RateLimitMiddleware
 from middlewares import UserRegistrationMiddleware
-from utils.api_methods import UserAPI, ComputerAPI, BookingAPI, PaymentAPI
+from utils.api_methods import UserAPI, ComputerAPI, BookingAPI, PaymentAPI, TicketAPI
 
 
 def middlewares_registration(dp: Dispatcher):
@@ -49,6 +49,11 @@ def routers_registration(dp: Dispatcher):
     dp.include_router(admins.payment_management_router)
     dp.include_router(admins.user_payment_history_router)
 
+    dp.include_router(admins.ticket_management_router)
+    dp.include_router(admins.open_tickets_router)
+    dp.include_router(admins.close_ticket_router)
+    dp.include_router(admins.get_ticket_by_id_router)
+
     dp.include_router(users.command_start_router)
     dp.include_router(users.command_bonus_router)
     dp.include_router(users.show_main_menu_router)
@@ -58,6 +63,7 @@ def routers_registration(dp: Dispatcher):
     dp.include_router(users.computer_list_router)
     dp.include_router(users.show_my_orders_router)
     dp.include_router(users.computer_booking_router)
+    dp.include_router(users.create_ticket_router)
 
     dp.include_router(errors.error_handler_router)
 
@@ -84,6 +90,7 @@ async def main():
                                computer_api=ComputerAPI(base_url=config.api.base_url, api_key=config.api.api_key),
                                booking_api=BookingAPI(base_url=config.api.base_url, api_key=config.api.api_key),
                                payment_api=PaymentAPI(base_url=config.api.base_url, api_key=config.api.api_key),
+                               ticket_api=TicketAPI(base_url=config.api.base_url, api_key=config.api.api_key),
                                config=config,
                                redis=redis
                                )

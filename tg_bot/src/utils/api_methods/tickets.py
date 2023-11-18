@@ -33,12 +33,18 @@ class TicketAPI:
                 if response.status == 200:
                     return await response.json()
 
-    async def get_user_tickets_by_user_id(self, user_id: int, ticket_status: str | None):
+    async def get_tickets_by_user_id(self, user_id: int, ticket_status: str | None):
         params = {}
         if ticket_status is not None:
             params["ticket_status"] = ticket_status
 
         async with aiohttp.ClientSession() as session:
             async with session.get(url=f"{self.url}/user/id{user_id}", params=params, headers=self.headers) as response:
+                if response.status == 200:
+                    return await response.json()
+
+    async def get_ticket_by_id(self, ticket_id: int):
+        async with aiohttp.ClientSession() as session:
+            async with session.get(url=f"{self.url}/id{ticket_id}", headers=self.headers) as response:
                 if response.status == 200:
                     return await response.json()
