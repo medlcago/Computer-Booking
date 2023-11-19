@@ -12,6 +12,7 @@ from handlers import close_handler_router
 from handlers import errors
 from handlers import unknown_action_router
 from handlers import users
+from middlewares import BlockMiddleware
 from middlewares import RateLimitMiddleware
 from middlewares import UserRegistrationMiddleware
 from utils.api_methods import UserAPI, ComputerAPI, BookingAPI, PaymentAPI, TicketAPI
@@ -22,6 +23,9 @@ def middlewares_registration(dp: Dispatcher):
 
     dp.message.middleware(RateLimitMiddleware())
     dp.callback_query.middleware(RateLimitMiddleware())
+
+    dp.message.middleware(BlockMiddleware())
+    dp.callback_query.middleware(BlockMiddleware())
 
 
 def routers_registration(dp: Dispatcher):

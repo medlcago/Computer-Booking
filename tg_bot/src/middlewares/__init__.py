@@ -1,2 +1,3 @@
+from .BlockMiddleware import BlockMiddleware
 from .RateLimitMiddleware import RateLimitMiddleware
 from .UserRegistrationMiddleware import UserRegistrationMiddleware
