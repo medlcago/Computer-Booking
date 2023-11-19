@@ -17,7 +17,7 @@ async def user_list_excel(call: CallbackQuery, user_api: UserAPI):
     """
     Список всех пользователей бота в формате Excel
     """
-    await call.answer(cache_time=60)
+    await call.answer(cache_time=15)
     users: list[dict] = await user_api.get_all_users()
     if users:
         headers = list(users[0].keys())

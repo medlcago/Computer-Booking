@@ -16,7 +16,7 @@ async def computer_list_excel(call: CallbackQuery, computer_api: ComputerAPI):
     """
     Список всех компьютеров в формате Excel
     """
-    await call.answer(cache_time=60)
+    await call.answer(cache_time=15)
     computers: list[dict] = await computer_api.get_all_computers()
     if computers:
         headers = list(computers[0].keys())

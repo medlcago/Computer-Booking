@@ -25,7 +25,7 @@ def main_menu() -> InlineKeyboardMarkup:
             InlineKeyboardButton(text="💲 Пополнить баланс", callback_data="top_up_balance")
         ],
         [
-            InlineKeyboardButton(text="📝 Создать тикет", callback_data="ticket")
+            InlineKeyboardButton(text="📝 Создать тикет", callback_data="create_ticket")
         ]
     ])
 
@@ -83,7 +83,7 @@ def user_management_menu() -> InlineKeyboardMarkup:
         ],
         [
             InlineKeyboardButton(text="Все пользователи [Excel]", callback_data="user_list_excel"),
-            InlineKeyboardButton(text="Информация о пользователе", callback_data="info_about_user")
+            InlineKeyboardButton(text="Информация о пользователе", callback_data="get_user_by_id")
         ],
         [
             InlineKeyboardButton(text="Все бронирования пользователя [Excel]",

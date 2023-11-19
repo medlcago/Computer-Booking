@@ -1,5 +1,7 @@
+import json
+
 from aiogram import Router, F
-from aiogram.fsm.context import FSMContext
+from aiogram.fsm.storage.redis import Redis
 from aiogram.types import CallbackQuery
 
 from keyboards.callbackdata import PageNumber
@@ -11,7 +13,7 @@ router = Router()
 
 
 @router.callback_query(F.data == "computer_list")
-async def computer_list(call: CallbackQuery, computer_api: ComputerAPI, state: FSMContext):
+async def computer_list(call: CallbackQuery, computer_api: ComputerAPI, redis: Redis):
     computers = await computer_api.get_all_computers()
     if not computers:
         await call.message.edit_text(
@@ -19,7 +21,8 @@ async def computer_list(call: CallbackQuery, computer_api: ComputerAPI, state: F
             reply_markup=create_inline_keyboard(width=1, show_menu="Назад")
         )
         return
-    await state.update_data(computers=computers)
+    computers_str = json.dumps(computers)
+    await redis.set(name=f"computer_list_{call.from_user.id}", value=computers_str)
 
     page = 1
     total_pages = len(computers)
@@ -32,13 +35,13 @@ async def computer_list(call: CallbackQuery, computer_api: ComputerAPI, state: F
 
 
 @router.callback_query(PageNumber.filter(F.page_type == "computers"))
-async def available_computers_pagination(call: CallbackQuery, callback_data: PageNumber, state: FSMContext):
+async def available_computers_pagination(call: CallbackQuery, callback_data: PageNumber, redis: Redis):
     await call.answer()
     action = callback_data.action
     if action == "current":
         return
     page = callback_data.page
-    computers = (await state.get_data()).get("computers")
+    computers = json.loads(await redis.get(name=f"computer_list_{call.from_user.id}"))
     if action == "prev":
         page -= 1
     elif action == "next":

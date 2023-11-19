@@ -30,7 +30,7 @@ def routers_registration(dp: Dispatcher):
 
     dp.include_router(admins.command_admin_router)
     dp.include_router(admins.user_management_router)
-    dp.include_router(admins.info_about_user_router)
+    dp.include_router(admins.get_user_by_id_router)
     dp.include_router(admins.user_booking_history_router)
     dp.include_router(admins.user_list_router)
     dp.include_router(admins.block_user_router)

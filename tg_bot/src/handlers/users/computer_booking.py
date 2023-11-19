@@ -64,4 +64,4 @@ async def computer_booking(call: CallbackQuery,
             reply_markup=create_inline_keyboard(width=1, top_up_balance="💲 Пополнить баланс")
         )
 
-    await call.answer(cache_time=60)
+    await call.answer(cache_time=30)

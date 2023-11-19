@@ -1,4 +1,4 @@
-from aiogram import Router, Bot
+from aiogram import Router, F, Bot
 from aiogram.fsm.context import FSMContext
 from aiogram.types import CallbackQuery
 from aiogram.types import Message
@@ -26,7 +26,7 @@ async def close_ticket(call: CallbackQuery, callback_data: Ticket, state: FSMCon
     )
 
 
-@router.message(CloseTicket.text)
+@router.message(CloseTicket.text, F.text)
 async def close_ticket(message: Message, bot: Bot, state: FSMContext, ticket_api: TicketAPI):
     data = await state.get_data()
 
@@ -49,6 +49,7 @@ async def close_ticket(message: Message, bot: Bot, state: FSMContext, ticket_api
             text=f"Вам пришел ответ на ваш тикет.\n"
                  f"<b>ID:</b> {ticket_id}\n"
                  f"<b>Заголовок:</b> {ticket.get('title')}\n\n"
-                 f"{text}")
+                 f"{text}"
+        )
 
     await state.clear()

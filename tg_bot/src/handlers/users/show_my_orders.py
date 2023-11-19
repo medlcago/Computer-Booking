@@ -1,7 +1,8 @@
+import json
 from datetime import datetime, timezone
 
 from aiogram import Router, F
-from aiogram.fsm.context import FSMContext
+from aiogram.fsm.storage.redis import Redis
 from aiogram.types import BufferedInputFile
 from aiogram.types import CallbackQuery
 
@@ -15,7 +16,7 @@ router = Router()
 
 
 @router.callback_query(F.data == "my_orders")
-async def show_my_orders(call: CallbackQuery, booking_api: BookingAPI, state: FSMContext):
+async def show_my_orders(call: CallbackQuery, booking_api: BookingAPI, redis: Redis):
     user_id = call.from_user.id
     orders = await booking_api.get_computer_bookings_by_user_id(user_id=user_id)
     if not orders:
@@ -24,7 +25,8 @@ async def show_my_orders(call: CallbackQuery, booking_api: BookingAPI, state: FS
             reply_markup=create_inline_keyboard(width=1, show_menu="Назад")
         )
         return
-    await state.update_data(orders=orders)
+    orders_str = json.dumps(orders)
+    await redis.set(name=f"my_orders_{call.from_user.id}", value=orders_str)
 
     page = 1
     total_pages = len(orders)
@@ -37,13 +39,13 @@ async def show_my_orders(call: CallbackQuery, booking_api: BookingAPI, state: FS
 
 
 @router.callback_query(PageNumber.filter(F.page_type == "orders"))
-async def orders_pagination(call: CallbackQuery, callback_data: PageNumber, state: FSMContext):
+async def orders_pagination(call: CallbackQuery, callback_data: PageNumber, redis: Redis):
     await call.answer()
     action = callback_data.action
     if action == "current":
         return
     page = callback_data.page
-    orders = (await state.get_data()).get("orders")
+    orders = json.loads(await redis.get(name=f"my_orders_{call.from_user.id}"))
     if action == "prev":
         page -= 1
     elif action == "next":
@@ -62,7 +64,7 @@ async def show_my_orders_excel(call: CallbackQuery, booking_api: BookingAPI):
     """
     Список всех заказов/бронирований пользователя в формате Excel
     """
-    await call.answer(cache_time=60)
+    await call.answer(cache_time=30)
     user_id = call.from_user.id
     orders: list[dict] = await booking_api.get_computer_bookings_by_user_id(user_id=user_id)
     if orders:
