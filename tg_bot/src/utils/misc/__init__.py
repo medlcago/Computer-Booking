@@ -1,3 +1,4 @@
+from .commands import set_bot_commands
 from .create_excel_file import create_bytes_excel_file
 from .generate_computer_message import generate_computer_message
 from .generate_info_about_user_message import generate_info_about_user_message

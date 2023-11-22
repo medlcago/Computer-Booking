@@ -9,3 +9,4 @@ from .show_main_menu import router as show_main_menu_router
 from .show_my_orders import router as show_my_orders_router
 from .show_my_profile import router as show_my_profile_router
 from .top_up_balance import router as top_up_balance_router
+from .user_activity_status import router as user_activity_status_router

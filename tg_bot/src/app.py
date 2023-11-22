@@ -16,6 +16,7 @@ from middlewares import BlockMiddleware
 from middlewares import RateLimitMiddleware
 from middlewares import UserRegistrationMiddleware
 from utils.api_methods import UserAPI, ComputerAPI, BookingAPI, PaymentAPI, TicketAPI
+from utils.misc import set_bot_commands
 
 
 def middlewares_registration(dp: Dispatcher):
@@ -58,6 +59,7 @@ def routers_registration(dp: Dispatcher):
     dp.include_router(admins.close_ticket_router)
     dp.include_router(admins.get_ticket_by_id_router)
 
+    dp.include_router(users.user_activity_status_router)
     dp.include_router(users.command_start_router)
     dp.include_router(users.command_bonus_router)
     dp.include_router(users.show_main_menu_router)
@@ -75,6 +77,10 @@ def routers_registration(dp: Dispatcher):
     dp.include_router(unknown_action_router)  # Обрабатывает любое неизвестное действие!
 
 
+async def on_startup(bot: Bot):
+    await set_bot_commands(bot=bot)
+
+
 async def main():
     bot = Bot(token=config.tg.token, parse_mode="html")
     storage = RedisStorage.from_url(config.redis.url)
@@ -83,6 +89,8 @@ async def main():
     dp = Dispatcher(storage=storage)
     routers_registration(dp=dp)
     middlewares_registration(dp=dp)
+
+    dp.startup.register(on_startup)
 
     logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s: %(message)s',
                         datefmt='%d.%m.%Y %H:%M:%S')
