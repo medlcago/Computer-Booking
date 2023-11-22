@@ -19,5 +19,8 @@ async def show_my_profile(call: CallbackQuery, user_api: UserAPI):
 
     await call.message.edit_text(
         text=MY_PROFILE.format(user_id=user_id, balance=balance, phone_number=phone_number),
-        reply_markup=create_inline_keyboard(width=1, show_menu="Вернуться в меню")
+        reply_markup=create_inline_keyboard(
+            width=1,
+            show_menu="Вернуться в меню",
+            change_password="👀 Сменить пароль")
     )

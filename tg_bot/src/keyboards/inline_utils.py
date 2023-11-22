@@ -42,7 +42,7 @@ def create_inline_keyboard(width: int,
 
     kb_builder.row(*buttons, width=width)
     if last_btn:
-        for button, text in kwargs.items():
+        for button, text in last_btn.items():
             kb_builder.row(InlineKeyboardButton(
                 text=text,
                 callback_data=button

@@ -68,6 +68,7 @@ def routers_registration(dp: Dispatcher):
     dp.include_router(users.show_my_orders_router)
     dp.include_router(users.computer_booking_router)
     dp.include_router(users.create_ticket_router)
+    dp.include_router(users.change_password_router)
 
     dp.include_router(errors.error_handler_router)
 
