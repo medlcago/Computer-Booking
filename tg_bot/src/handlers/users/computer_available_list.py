@@ -28,8 +28,7 @@ async def computer_available_list(call: CallbackQuery, computer_api: ComputerAPI
     total_pages = len(computers)
     computer = computers[page - 1]
     message_text, keyboard = generate_computer_message(computer, page, total_pages,
-                                                       page_type="available_computers",
-                                                       add_booking=True)
+                                                       page_type="available_computers")
     await call.message.edit_text(
         text=message_text,
         reply_markup=keyboard
@@ -51,6 +50,5 @@ async def available_computers_pagination(call: CallbackQuery, callback_data: Pag
 
     computer = computers[page - 1]
     message_text, keyboard = generate_computer_message(computer, page, len(computers),
-                                                       page_type="available_computers",
-                                                       add_booking=True)
+                                                       page_type="available_computers")
     await call.message.edit_text(text=message_text, reply_markup=keyboard)

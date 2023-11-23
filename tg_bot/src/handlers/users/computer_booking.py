@@ -46,22 +46,46 @@ async def computer_booking(call: CallbackQuery,
                             booking_id=booking.get("id"),
                             start_time=start_time.strftime("%d.%m.%Y %H:%M:%S"),
                             end_time=end_time.strftime("%d.%m.%Y %H:%M:%S")
+                        ),
+                        reply_markup=create_inline_keyboard(
+                            width=1,
+                            close="❌ Закрыть"
                         )
                     )
                 else:
                     await booking_api.delete_computer_booking(booking_id=booking.get("id"))
-                    await call.message.edit_text("Произошла ошибка при бронировании компьютера.")
+                    await call.message.edit_text(
+                        text="Произошла ошибка при бронировании компьютера.",
+                        reply_markup=create_inline_keyboard(
+                            width=1,
+                            close="❌ Закрыть"
+                        )
+                    )
             else:
-                await call.message.edit_text("Произошла ошибка при бронировании компьютера.")
+                await call.message.edit_text(
+                    text="Произошла ошибка при бронировании компьютера.",
+                    reply_markup=create_inline_keyboard(
+                        width=1,
+                        close="❌ Закрыть"
+                    )
+                )
         else:
             await call.message.edit_text(
                 text="На данный момент компьютер недоступен.",
-                reply_markup=create_inline_keyboard(width=1, computer_available_list="Назад")
+                reply_markup=create_inline_keyboard(
+                    width=1,
+                    computer_available_list="Назад",
+                    close="❌ Закрыть"
+                )
             )
     else:
         await call.message.edit_text(
             text="На вашем балансе недостаточно средств. Пожалуйста, пополните баланс и повторите попытку.",
-            reply_markup=create_inline_keyboard(width=1, top_up_balance="💲 Пополнить баланс")
+            reply_markup=create_inline_keyboard(
+                width=1,
+                top_up_balance="💲 Пополнить баланс",
+                close="❌ Закрыть"
+            )
         )
 
     await call.answer(cache_time=30)
