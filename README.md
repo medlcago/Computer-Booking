@@ -1,26 +1,25 @@
-# Club-management
+# Computer Booking
 
-This project is developed as part of the "Interpreted Programming Language" discipline. The goal of this project is to
-create a club management system with an API and integrate it with a Telegram bot.
+This project is being developed as part of the Interpreted Programming Language discipline. 
+The purpose of this project is to create a computer bookings system with API and integrate it with Telegram-bot.
 
 ## Description
 
-The Club Management Project aims to provide a comprehensive solution for managing clubs and their activities. It
-includes an API that allows you to perform various operations, such as creating and managing club events, registering
-club members, and more. In addition, the project integrates with a Telegram bot to provide a convenient interface for
-interacting with the club management system.
+The Computer Booking project aims to create a comprehensive solution for computer booking. 
+It includes an API that allows you to perform various operations, such as creating and managing computers, registering users and other.
+In addition, the project integrates with a Telegram bot that provides a convenient interface for work.
 
 ## Features
 
-- Create and manage club events
-- Register and manage club members
+- User registration and management
 - Create and manage computers
-- Integration with a Telegram bot for easy access and communication
+- It is possible to top up directly in the bot
+- Integration with Telegram bot for easy access and communication
 
 ## Technologies Used
 
 - Python
 - FastAPI (API development framework)
 - aiogram (for integration with Telegram bot)
-- Database (e.g., MySQL, PostgreSQL) for data storage
+- PostgreSQL database for data storage
 - Redis
