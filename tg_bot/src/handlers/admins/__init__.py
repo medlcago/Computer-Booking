@@ -19,6 +19,7 @@ from .ticket_management import ticket_management_router
 
 from .user_management import block_user_router
 from .user_management import change_balance_router
+from .user_management import delete_user_router
 from .user_management import get_user_by_id_router
 from .user_management import unblock_user_router
 from .user_management import user_booking_history_router

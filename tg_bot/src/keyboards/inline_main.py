@@ -85,6 +85,9 @@ def user_management_menu() -> InlineKeyboardMarkup:
             InlineKeyboardButton(text="Разблокировать", callback_data="unblock_user")
         ],
         [
+            InlineKeyboardButton(text="❗️Удалить пользователя", callback_data="delete_user")
+        ],
+        [
             InlineKeyboardButton(text="Все пользователи [Excel]", callback_data="user_list_excel"),
             InlineKeyboardButton(text="Информация о пользователе", callback_data="get_user_by_id")
         ],

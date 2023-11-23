@@ -43,3 +43,7 @@ class CloseTicket(StatesGroup):
 
 class TicketInfo(StatesGroup):
     ticket_id = State()
+
+
+class DeleteUser(StatesGroup):
+    user_id = State()

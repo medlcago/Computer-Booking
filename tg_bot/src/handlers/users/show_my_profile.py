@@ -22,5 +22,5 @@ async def show_my_profile(call: CallbackQuery, user_api: UserAPI):
         reply_markup=create_inline_keyboard(
             width=1,
             show_menu="Вернуться в меню",
-            change_password="👀 Сменить пароль")
+            change_password="Сменить пароль")
     )
