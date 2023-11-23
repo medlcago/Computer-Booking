@@ -4,6 +4,9 @@ from keyboards.callbackdata import TopUpBalance
 
 main_menu_button = InlineKeyboardMarkup(inline_keyboard=[
     [
+        InlineKeyboardButton(text="GitHub", url="https://github.com/medlcago/Club-management/")
+    ],
+    [
         InlineKeyboardButton(text="Показать меню", callback_data="show_menu")
     ]
 ])
