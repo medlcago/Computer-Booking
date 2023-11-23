@@ -29,6 +29,9 @@ def main_menu() -> InlineKeyboardMarkup:
         ],
         [
             InlineKeyboardButton(text="📝 Создать тикет", callback_data="create_ticket")
+        ],
+        [
+            InlineKeyboardButton(text="❔ Информация о боте", callback_data="bot_information")
         ]
     ])
 
@@ -69,6 +72,9 @@ def admin_menu() -> InlineKeyboardMarkup:
         ],
         [
             InlineKeyboardButton(text="Управление тикетами", callback_data="ticket_management")
+        ],
+        [
+            InlineKeyboardButton(text="🤖 Информация о сервере", callback_data="server_info")
         ],
         [
             InlineKeyboardButton(text="❌ Закрыть", callback_data="close")

@@ -2,6 +2,7 @@ from .booking_management import booking_management_router
 from .booking_management import bookings_list_router
 
 from .cmd_admin import router as command_admin_router
+from .cmd_server import router as command_server_router
 
 from .computer_management import add_computer_router
 from .computer_management import computer_list_by_category_router

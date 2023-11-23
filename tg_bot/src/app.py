@@ -7,6 +7,7 @@ from aiogram.fsm.storage.redis import RedisStorage
 
 from config import config
 from handlers import admins
+from handlers import bot_information_router
 from handlers import cancel_handler_router
 from handlers import close_handler_router
 from handlers import errors
@@ -34,6 +35,7 @@ def routers_registration(dp: Dispatcher):
     dp.include_router(close_handler_router)
 
     dp.include_router(admins.command_admin_router)
+    dp.include_router(admins.command_server_router)
     dp.include_router(admins.user_management_router)
     dp.include_router(admins.get_user_by_id_router)
     dp.include_router(admins.user_booking_history_router)
@@ -72,6 +74,8 @@ def routers_registration(dp: Dispatcher):
     dp.include_router(users.computer_booking_router)
     dp.include_router(users.create_ticket_router)
     dp.include_router(users.change_password_router)
+
+    dp.include_router(bot_information_router)
 
     dp.include_router(errors.error_handler_router)
 
