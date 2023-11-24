@@ -1,3 +1,7 @@
+<div align="center">
+    <h1>Проект был успешно защищен.</h1>
+</div>
+
 # Computer Booking
 
 This project is being developed as part of the Interpreted Programming Language discipline. 
