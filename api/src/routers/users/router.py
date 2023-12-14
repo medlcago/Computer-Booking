@@ -13,10 +13,9 @@ from routers.users.schemas import (
     UpdatedUserDetails,
     FullUserResponse
 )
-from services.auth import auth_guard_key
 from . import crud
 
-router = APIRouter(prefix="/users", tags=["Users"], dependencies=[Depends(auth_guard_key)])
+router = APIRouter(prefix="/users", tags=["Users"])
 
 
 @router.post("/", response_model=UserResponse, summary="Регистрация нового пользователя",

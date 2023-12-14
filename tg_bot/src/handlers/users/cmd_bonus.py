@@ -26,6 +26,7 @@ async def command_bonus(message: Message, redis: Redis, user_api: UserAPI):
         tzinfo=datetime.timezone.utc) if last_bonus_time_str else None
 
     current_time = datetime.datetime.now(datetime.timezone.utc)
+    keyboard = create_inline_keyboard(width=1, my_profile="👤 Мой профиль")
 
     if last_bonus_time is None or (current_time - last_bonus_time) >= datetime.timedelta(hours=bonus_frequency):
         user = await user_api.get_user_by_id(user_id=user_id)
@@ -43,18 +44,18 @@ async def command_bonus(message: Message, redis: Redis, user_api: UserAPI):
                 )
                 await message.answer(
                     text=f"Вы получили бонус!\nНа ваш баланс начислено <b>{bonus} RUB</b>",
-                    reply_markup=create_inline_keyboard(width=1, my_profile="👤 Мой профиль")
+                    reply_markup=keyboard
                 )
             else:
                 await message.answer(
                     text="Не удалось получить бонус :(",
-                    reply_markup=create_inline_keyboard(width=1, my_profile="👤 Мой профиль")
+                    reply_markup=keyboard
                 )
     else:
         next_bonus_time = (last_bonus_time + datetime.timedelta(hours=bonus_frequency)).strftime(time_format)
         await message.answer(
             text=f"Вы уже получили бонус.\nСледующий бонус будет доступен <b>{next_bonus_time} UTC+0</b>",
-            reply_markup=create_inline_keyboard(width=1, my_profile="👤 Мой профиль")
+            reply_markup=keyboard
         )
 
 

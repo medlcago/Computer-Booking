@@ -4,10 +4,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from api.enums import TicketStatus
 from database import get_db
 from routers.tickets.schemas import CreateTicket, TicketResponse
-from services.auth import auth_guard_key
 from . import crud
 
-router = APIRouter(prefix="/tickets", tags=["Tickets"], dependencies=[Depends(auth_guard_key)])
+router = APIRouter(prefix="/tickets", tags=["Tickets"])
 
 
 @router.post("/", response_model=TicketResponse, summary="Создание нового тикета", status_code=status.HTTP_201_CREATED)

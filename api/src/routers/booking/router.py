@@ -8,10 +8,9 @@ from database import get_db
 from routers.booking.schemas import (
     BaseBooking,
     BookingResponse)
-from services.auth import auth_guard_key
 from . import crud
 
-router = APIRouter(prefix="/bookings", tags=["Bookings"], dependencies=[Depends(auth_guard_key)])
+router = APIRouter(prefix="/bookings", tags=["Bookings"])
 
 
 @router.post("/", response_model=BookingResponse, summary="Создать новый заказ", status_code=status.HTTP_201_CREATED)

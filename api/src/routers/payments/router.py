@@ -3,10 +3,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from database import get_db
 from routers.payments.schemas import CreatePayment, PaymentResponse
-from services.auth import auth_guard_key
 from . import crud
 
-router = APIRouter(prefix="/payments", tags=["Payments"], dependencies=[Depends(auth_guard_key)])
+router = APIRouter(prefix="/payments", tags=["Payments"])
 
 
 @router.post("/", response_model=PaymentResponse, summary="Создание нового платежа",

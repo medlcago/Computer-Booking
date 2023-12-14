@@ -10,10 +10,9 @@ from routers.computers.schemas import (
     UpdateComputerComponent,
     ComputerResponse,
     UpdatedComputerComponent)
-from services.auth import auth_guard_key
 from . import crud
 
-router = APIRouter(prefix="/computers", tags=["Computers"], dependencies=[Depends(auth_guard_key)])
+router = APIRouter(prefix="/computers", tags=["Computers"])
 
 
 @router.post("/", response_model=ComputerResponse, summary="Добавить новый компьютер",
