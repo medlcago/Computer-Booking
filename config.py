@@ -26,6 +26,7 @@ class TgBotConfig:
 
 @dataclass
 class ApiConfig:
+    api_v1_prefix: str
     api_key: str
     base_url: str
 
@@ -67,6 +68,7 @@ def load_config(debug: bool = False, path: str | None = None) -> Config:
             db_url=f"postgresql+asyncpg://{env.str('DB_USER')}:{env.str('DB_PASSWORD')}@{env.str('DB_HOST')}:{env.str('DB_PORT')}/{env.str('DB_NAME')}"),
 
         api=ApiConfig(
+            api_v1_prefix="/api/v1",
             api_key=env.str("API_KEY"),
             base_url=env.str("BASE_URL")
         ),
